@@ -1,70 +1,312 @@
-// styles
-.pageStyles {
-  color: #232129;
-  padding: 96px;
-  font-family: -apple-system, Roboto, sans-serif, serif;
-}
-.headingStyles {
-  margin-top: 0;
-  margin-bottom: 64px;
-  max-width: 320px;
-}
-.headingAccentStyles {
-  color: #663399;
-}
-.paragraphStyles {
-  margin-bottom: 48px;
-}
-.codeStyles {
-  color: #8A6534;
-  padding: 4px;
-  background-color: #FFF4DB;
-  font-size: 1.25rem;
-  border-radius: 4px;
-}
-.listStyles {
-  margin-bottom: 96px;
-  padding-left: 0;
-}
-.listItemStyles {
-  font-weight: 300;
-  font-size: 24px;
-  max-width: 560px;
-  margin-bottom: 30px;
+@use "colors";
+@use "sass:list";
+
+* {
+  box-sizing: border-box;
 }
 
-.linkStyle, .docLinkStyle {
-  color: #8954A8;
-  font-weight: bold;
-  font-size: 16px;
-  vertical-align: 5%;
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Roboto", "Times New Roman", sans-serif;
+  line-height: 1.5;
 }
 
-.docLinkStyle {
-  list-style-type: none;
-  margin-bottom: 24px;
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Roboto Mono", "Times New Roman", monospace;
+  text-transform: lowercase;
 }
 
-.descriptionStyle {
-  color: #232129;
-  font-size: 14px;
-  margin-top: 10px;
-  margin-bottom: 0;
-  line-height: 1.25;
+h2 {
+  font-size: 2.5em;
 }
 
-.badgeStyle {
-  color: #fff;
-  background-color: #088413;
-  border: 1px solid #088413;
-  font-size: 11px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  border-radius: 4px;
-  padding: 4px 6px;
-  display: inline-block;
+h3 {
+  font-size: 1.5em;
+}
+
+.heading {
+  text-align: left;
+  width: 100%;
+  display: flex;
+  font-size: 3em;
+  align-items: baseline;
   position: relative;
-  top: -2px;
-  margin-left: 10px;
-  line-height: 1;
+  left: -100px;
+
+  h1 {
+    margin: 0;
+  }
+
+  .bullet {
+    width: calc(55px * 1.73205081 / 2);
+    height: 55px;
+    clip-path: polygon(0% 100%, 0% 0%, 100% 50%);
+    margin-right: 15px;
+
+    div {
+      width: 100%;
+      height: calc(55px / 2);
+    }
+  }
+}
+
+.typewriter {
+  .text {
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    border-right: .15em solid colors.$blue; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+    letter-spacing: .075em; /* Adjust as needed */
+    animation: typing 2s steps(36, end), blink-caret 4.5s step-end infinite;
+  }
+
+  /* The typing effect */
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+
+  /* The typewriter cursor effect */
+  @keyframes blink-caret {
+    0%, 17%, 33%, 50%, 67%, 83%, 100% { border-color: transparent }
+    8% { border-color: colors.$red; }
+    25% { border-color: colors.$orange; }
+    42% { border-color: colors.$yellow; }
+    59% { border-color: colors.$green; }
+    75% { border-color: colors.$blue; }
+    92% { border-color: colors.$purple; }
+  }
+}
+
+.appear-on-scroll {
+  transition: colors.$transition;
+
+  &.hidden {
+    opacity: 0;
+  }
+
+  &.shown {
+    opacity: 1;
+  }
+}
+
+main {
+  width: 100%;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  padding: 100px 200px;
+
+  @for $i from 1 through 3 {
+    &:nth-of-type(3n + #{($i + 1) % 3}) .heading .bullet div {
+      &:first-of-type {
+        background-color: list.nth(colors.$rainbow, 2 * $i - 1);
+      }
+
+      &:last-of-type {
+        background-color: list.nth(colors.$rainbow, 2 * $i);
+      }
+    }
+  }
+}
+
+.index {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  h2 {
+    font-size: 1.5em;
+  }
+
+  .logo-center {
+    max-width: 500px;
+    width: 75vw;
+  }
+}
+
+.about {
+  padding: 100px 60px;
+
+  .intro {
+    padding: 0 140px;
+
+    .about-intro {
+      width: 90%;
+      font-size: 1.2em;
+      margin: 30px 0;
+    }
+  }
+
+  .benefits {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    &.hidden {
+      opacity: 1;
+
+      .benefit-card {
+        opacity: 0;
+      }
+    }
+
+    .benefit-card {
+      width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 30px;
+
+      @for $i from 1 through 4 {
+        &:nth-child(#{$i}n) {
+          transition: all 0.2s ease #{$i * 0.2}s;
+        }
+      }
+
+      img {
+        max-width: 300px;
+        max-height: 300px;
+        width: 10vw;
+        object-fit: contain;
+      }
+    }
+
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+
+  input, select {
+    font-family: colors.$body-font;
+    font-size: 1em;
+    padding: 10px;
+    border: solid 1px black;
+    border-radius: 3px;
+    margin: 10px;
+
+    &::placeholder {
+      font-family: colors.$header-font;
+      text-transform: lowercase;
+    }
+  }
+
+  select {
+    font-family: colors.$header-font;
+    font-size: 1em;
+  }
+
+  input[type=button], input[type=submit], input[type=reset] {
+    font-family: colors.$header-font;
+    text-transform: lowercase;
+    cursor: pointer;
+  }
+
+  input[type=submit] {
+    border: none;
+    background-color: black;
+    color: white;
+
+    &:hover {
+      box-shadow: 3px 3px #000000;
+      transform: translate(-3px, -3px);
+    }
+  }
+
+  input[type=reset] {
+    border: none;
+    background-color: #fff;
+    box-shadow: 2px 2px #000000;
+    transform: translate(-2px, -2px);
+
+    &:hover {
+      box-shadow: 5px 5px #000000;
+      transform: translate(-5px, -5px);
+    }
+  }
+}
+
+.get-involved {
+  .upcoming-events {
+    .events-list {
+      .event {
+        display: flex;
+        align-items: center;
+
+        @for $i from 1 through 6 {
+          &:nth-of-type(6n + #{$i}) .bullet {
+            background-color: list.nth(colors.$rainbow, $i);
+          }
+        }
+
+        div {
+          display: flex;
+          width: 100%;
+          justify-content: space-between;
+          align-items: center;
+
+          & > * {
+            flex: 1;
+          }
+
+          h6 {
+            font-size: 1em;
+            font-weight: normal;
+            margin: 0;
+          }
+
+          p:first-of-type {
+            text-align: center;
+          }
+        }
+
+        .bullet {
+          content: "";
+          width: 15px;
+          height: 15px;
+          margin: 20px;
+          transform: rotate(45deg);
+        }
+      }
+    }
+  }
+}
+
+.sponsors {
+  .category {
+    div {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+
+        img {
+          width: 250px;
+          object-fit: contain;
+          margin: 20px;
+        }
+
+        &:hover img {
+          transform: translate(-5px, -5px);
+        }
+      }
+    }
+  }
 }

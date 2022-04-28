@@ -1,0 +1,49 @@
+@use "colors";
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px 30px;
+  background-color: #fff;
+  text-transform: lowercase;
+  z-index: 10000;
+
+  .logo {
+    height: 50px;
+  }
+
+  ul {
+    display: flex;
+    position: relative;
+    padding: 0;
+
+    .underline {
+      transition: colors.$transition;
+      height: 10px;
+      position: absolute;
+      bottom: -15px;
+      left: 20px;
+
+      span {
+        transition: colors.$transition;
+        position: absolute;
+        height: 100%;
+      }
+    }
+
+    li {
+      list-style: none;
+      padding: 0 20px;
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        font-family: colors.$header-font;
+      }
+    }
+  }
+}

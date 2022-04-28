@@ -1,8 +1,8 @@
 import * as React from "react";
 import Main from "../page-sections/main";
 
-const IndexPage = () => (
-  <Main section={-1} />
+const AboutPage = () => (
+  <Main section={0} />
 );
 
-export default IndexPage;
+export default AboutPage;
