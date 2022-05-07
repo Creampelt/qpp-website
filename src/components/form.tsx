@@ -1,35 +1,8 @@
 import * as React from "react";
 
-const data: FormField[] = [
-  {
-    id: "name",
-    title: "Name",
-    type: "text"
-  },
-  {
-    id: "uteid",
-    title: "UT EID",
-    type: "text"
-  },
-  {
-    id: "class",
-    title: "Class",
-    type: "dropdown",
-    options: [
-      "2022",
-      "2023",
-      "2024",
-      "2025",
-      "2026"
-    ]
-  },
-  {
-    id: "email",
-    title: "Email",
-    type: "email"
-  },
-
-];
+type FormProps = {
+  data: FormField[]
+}
 
 type FieldProps = {
   fieldData: FormField
@@ -53,16 +26,14 @@ const Field: React.FunctionComponent<FieldProps> = ({ fieldData }) => {
   }
 }
 
-const Form = () => {
-  return (
-    <form>
-      {data.map((fieldData) => <Field key={fieldData.id} fieldData={fieldData} />)}
-      <div className={"buttons"}>
-        <input type={"submit"} />
-        <input type={"reset"} value={"Clear"} />
-      </div>
-    </form>
-  )
-};
+const Form: React.FunctionComponent<FormProps> = ({ data }) => (
+  <form>
+    {data.map((fieldData) => <Field fieldData={fieldData} key={fieldData.id} />)}
+    <div className={"buttons"}>
+      <input type={"submit"} />
+      <input type={"reset"} value={"Clear"} />
+    </div>
+  </form>
+);
 
 export default Form;

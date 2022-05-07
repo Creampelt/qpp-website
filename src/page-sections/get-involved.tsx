@@ -2,24 +2,19 @@ import * as React from "react";
 import Heading from "../components/heading";
 import Form from "../components/form";
 import moment from "moment";
+import { graphql, useStaticQuery } from "gatsby";
 
-const dateFormat = "YYYY-MM-DD hh:mm A";
+const DATE_FORMAT = "YYYY-MM-DD hh:mm A";
 
-const EVENTS: UpcomingEvent[] = [
-  { name: "Emily & Esther Wedding", location: "GDC 5.302", start: moment("2022-04-02 12:00 PM", dateFormat), end: moment("2022-04-02 06:00 PM", dateFormat) },
-  { name: "Emily & Vincent Wedding", location: "GDC 5.302", start: moment("2022-04-09 12:00 PM", dateFormat), end: moment("2022-04-09 12:01 PM", dateFormat) },
-  { name: "Emily & Sun Wedding", location: "GDC 5.302", start: moment("2022-04-16 12:00 PM", dateFormat), end: moment("2022-04-17 06:00 PM", dateFormat) },
-  { name: "Emily & Lexi Wedding", location: "GDC 5.302", start: moment("2022-04-23 12:00 PM", dateFormat), end: moment("2022-04-23 06:00 PM", dateFormat) },
-  { name: "Emily & Caterina Wedding", location: "GDC 5.302", start: moment("2022-04-30 12:00 PM", dateFormat), end: moment("2022-04-30 06:00 PM", dateFormat) },
-  { name: "Emily & Esther Wedding", location: "GDC 5.302", start: moment("2022-04-02 12:00 PM", dateFormat), end: moment("2022-04-02 06:00 PM", dateFormat) },
-  { name: "Emily & Vincent Wedding", location: "GDC 5.302", start: moment("2022-04-09 12:00 PM", dateFormat), end: moment("2022-04-09 12:01 PM", dateFormat) },
-  { name: "Emily & Sun Wedding", location: "GDC 5.302", start: moment("2022-04-16 12:00 PM", dateFormat), end: moment("2022-04-17 06:00 PM", dateFormat) },
-  { name: "Emily & Lexi Wedding", location: "GDC 5.302", start: moment("2022-04-23 12:00 PM", dateFormat), end: moment("2022-04-23 06:00 PM", dateFormat) },
-  { name: "Emily & Caterina Wedding", location: "GDC 5.302", start: moment("2022-04-30 12:00 PM", dateFormat), end: moment("2022-04-30 06:00 PM", dateFormat) },
-];
+type Query = {
+  getInvolvedTitle: ContentfulSectionTitle,
+  formFields: All<ContentfulFormField>,
+  upcomingEventsTitle: ContentfulSectionTitle,
+  events: All<ContentfulEvent>
+};
 
 const EventElement: React.FunctionComponent<UpcomingEvent> = ({ name, location, start, end }) => (
-  <div className={"event"}>
+  <div className={"event"} key={`${name}_${location}_${start.format(DATE_FORMAT)}_${end.format(DATE_FORMAT)}`}>
     <div className={"bullet"} />
     <div>
       <h6>{name}</h6>
@@ -34,17 +29,59 @@ const EventElement: React.FunctionComponent<UpcomingEvent> = ({ name, location, 
   </div>
 );
 
-const GetInvolved = React.forwardRef<HTMLDivElement>((_, ref) => (
-  <div ref={ref} className={"section get-involved"}>
-    <Heading>Get Involved</Heading>
-    <Form />
-    <div className={"upcoming-events"}>
-      <h2>Upcoming Events</h2>
-      <div className={"events-list"}>
-        {EVENTS.map((event, i) => <EventElement key={i} {...event} />)}
+const GetInvolved = React.forwardRef<HTMLDivElement>((_, ref) => {
+  const data: Query = useStaticQuery(graphql`
+    {
+      getInvolvedTitle: contentfulSectionTitle(contentfulid: { eq: "getInvolved" }) {
+        title
+      }
+      formFields: allContentfulFormField(sort: { fields: index }) {
+        edges {
+          node {
+            contentfulid
+            title
+            type
+            options
+          }
+        }
+      }
+      upcomingEventsTitle: contentfulSectionTitle(contentfulid: { eq: "upcomingEvents" }) {
+        title
+      }
+      events: allContentfulEvent(sort: { fields: start }) {
+        edges {
+          node {
+            name
+            location
+            start(formatString: "YYYY-MM-DD hh:mm A")
+            end(formatString: "YYYY-MM-DD hh:mm A")
+          }
+        }
+      }
+    }
+  `);
+
+  const events = data.events.edges.map(({ node }) => ({
+    ...node,
+    start: moment(node.start, DATE_FORMAT),
+    end: moment(node.end, DATE_FORMAT)
+  })).filter(({ start }) => moment().isBefore(start));
+
+  return (
+    <div ref={ref} className={"section get-involved"}>
+      <Heading>{data.getInvolvedTitle.title}</Heading>
+      <Form data={data.formFields.edges.map(({ node }) => ({
+        ...node,
+        id: node.contentfulid
+      }))} />
+      <div className={"upcoming-events"}>
+        <h2>{data.upcomingEventsTitle.title}</h2>
+        <div className={"events-list"}>
+          {events.map((event, i) => <EventElement key={i} {...event} />)}
+        </div>
       </div>
     </div>
-  </div>
-));
+  )
+});
 
 export default GetInvolved;

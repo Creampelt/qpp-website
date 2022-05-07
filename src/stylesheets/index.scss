@@ -54,7 +54,7 @@ h3 {
 .typewriter {
   .text {
     overflow: hidden; /* Ensures the content is not revealed until the animation */
-    border-right: .15em solid colors.$blue; /* The typwriter cursor */
+    border-right: .15em solid colors.$blue; /* The typewriter cursor */
     white-space: nowrap; /* Keeps the content on a single line */
     margin: 0 auto; /* Gives that scrolling effect as the typing happens */
     letter-spacing: .075em; /* Adjust as needed */
@@ -288,7 +288,7 @@ form {
     div {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
+      justify-content: left;
 
       a {
         display: flex;

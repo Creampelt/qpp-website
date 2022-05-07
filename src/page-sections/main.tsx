@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Helmet } from "react-helmet";
 import Navbar from "../components/navbar";
+import Header from "./header";
 import About from "./about";
 import GetInvolved from "./get-involved";
 import Sponsors from "./sponsors";
@@ -32,7 +33,7 @@ type IndexProps = {
 };
 
 const Main: React.FunctionComponent<IndexProps> = ({ section }) => {
-  const [pos, setPos] = React.useState(-1);
+  const [pos, setPos] = React.useState(section);
   const [isScrolling, _setIsScrolling] = React.useState(false);
   const about = React.useRef<HTMLDivElement>(null);
   const getInvolved = React.useRef<HTMLDivElement>(null);
@@ -72,9 +73,9 @@ const Main: React.FunctionComponent<IndexProps> = ({ section }) => {
   };
 
   const waitForScrollToRef = async (ref: React.RefObject<HTMLDivElement>) => {
-    if (!ref.current) return;
-    // @ts-ignore
-    const getDest = () => ref.current.getBoundingClientRect().top;
+    const { current } = ref;
+    if (!current) return;
+    const getDest = () => current.getBoundingClientRect().top;
     await waitForScrollToDest(getDest);
   }
 
@@ -111,12 +112,7 @@ const Main: React.FunctionComponent<IndexProps> = ({ section }) => {
       </Helmet>
       <Navbar links={links} pos={pos} setPos={scrollTo} />
       <main>
-        <div className={"section index"}>
-          <img className={"logo-center"} src={logo} alt={"Q++ Logo"} />
-          <div className={"typewriter"}>
-            <h2 className={"text"}>at the University of Texas at Austin</h2>
-          </div>
-        </div>
+        <Header />
         <About ref={about} />
         <GetInvolved ref={getInvolved} />
         <Sponsors ref={sponsors} />

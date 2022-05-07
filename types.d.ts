@@ -5,12 +5,13 @@ type NavLink = {
 };
 
 type Benefit = {
-  img: string,
+  img: {
+    title: string,
+    url: string
+  },
   title: string,
   body: string
 };
-
-type FieldType = "text" | "email" | "dropdown";
 
 type MainField = {
   id: string,
@@ -35,9 +36,13 @@ type UpcomingEvent = {
   end: moment.Moment
 };
 
+type GatsbyImage = {
+  gatsbyImageData: import("gatsby-plugin-image").IGatsbyImageData
+}
+
 type Sponsor = {
   name: string,
-  logo: string,
+  logo: GatsbyImage,
   website: string
 };
 
@@ -45,3 +50,47 @@ type SponsorCategory = {
   title: string,
   sponsors: Sponsor[]
 };
+
+type ContentfulSectionTitle = {
+  title: string
+};
+
+type ContentfulFormField = {
+  contentfulid: string,
+  title: string,
+  type: "text" | "email" | "dropdown",
+  options: string[]
+};
+
+type ContentfulEvent = {
+  name: string,
+  location: string,
+  start: string,
+  end: string
+};
+
+type ContentfulBenefit = {
+  img: {
+    title: string,
+    url: string
+  },
+  title: string,
+  body: { body: string }
+};
+
+type ContentfulSponsorCategory = {
+  title: string,
+  sponsors: {
+    logo: GatsbyImage,
+    website: string,
+    name: string
+  }[]
+};
+
+type ContentfulImage = {
+  image: Gatsbyimage & { title: string }
+};
+
+interface All<T> {
+  edges: { node: T }[]
+}

@@ -10,7 +10,7 @@ const AppearOnScroll: React.FunctionComponent<AppearOnScrollProps> = ({ classNam
 
   const onScroll = () => {
     if (divRef.current && (
-      divRef.current.getBoundingClientRect().top < window.innerHeight / 3 ||
+      divRef.current.getBoundingClientRect().top < window.innerHeight / 2 ||
       divRef.current.getBoundingClientRect().bottom < window.innerHeight
     )) {
       setShow(true);
