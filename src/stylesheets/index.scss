@@ -239,6 +239,10 @@ form {
 
 .get-involved {
   .upcoming-events {
+    .no-events {
+      text-align: center;
+    }
+
     .events-list {
       .event {
         display: flex;

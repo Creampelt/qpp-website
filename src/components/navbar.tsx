@@ -1,6 +1,12 @@
 import * as React from "react";
 import "../stylesheets/navbar.scss";
-import logo from "../images/logo_alpha_2048.png";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
+import { graphql, useStaticQuery } from "gatsby";
+
+type Query = {
+  links: All<ContentfulNavbarTitle>,
+  logo: ContentfulImage
+}
 
 type NavbarProps = {
   links: NavLink[],
@@ -8,7 +14,36 @@ type NavbarProps = {
   setPos: (i: number) => void
 };
 
-const Navbar: React.FunctionComponent<NavbarProps> = ({ links, pos, setPos }) => {
+const Navbar: React.FunctionComponent<NavbarProps> = ({ pos, setPos }) => {
+  const data: Query = useStaticQuery(graphql`
+    {
+      links: allContentfulSectionTitle(
+        filter: { displayInNavbar: { eq: true } }
+        sort: { fields: index }
+      ) {
+        edges {
+          node {
+            title
+            url
+            colors
+          }
+        }
+      }
+      logo: contentfulImage(contentfulid: { eq: "logo" }) {
+        image {
+          gatsbyImageData(layout: CONSTRAINED, width: 50)
+        }
+      }
+    }
+  `);
+
+  const links: NavLink[] = data.links.edges.map(({ node }) => ({
+    title: node.title,
+    to: node.url,
+    colors: node.colors
+  }));
+  const logo = getImage(data.logo.image.gatsbyImageData);
+
   const linkRefs = React.useRef(Array(links.length).fill(null));
   const [width, setWidth] = React.useState(0);
   const [offset, setOffset] = React.useState(0);
@@ -40,7 +75,7 @@ const Navbar: React.FunctionComponent<NavbarProps> = ({ links, pos, setPos }) =>
   return (
     <nav>
       <a href={"/"} onClick={(e) => { e.preventDefault(); setPos(-1) }}>
-        <img className={"logo"} src={logo} alt={"Q++"}/>
+        {logo && <GatsbyImage className={"logo"} alt={"Q++"} image={logo} />}
       </a>
       <ul className={pos.toString()}>
         {links.map(({title, to}, i) => (

@@ -5,7 +5,6 @@ import Header from "./header";
 import About from "./about";
 import GetInvolved from "./get-involved";
 import Sponsors from "./sponsors";
-import logo from "../images/logo_alpha_2048.png";
 import "../stylesheets/index.scss";
 import { graphql, useStaticQuery } from "gatsby";
 

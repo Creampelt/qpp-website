@@ -1,7 +1,7 @@
 type NavLink = {
   title: string,
   to: string,
-  colors: string[]
+  colors: [string, string]
 };
 
 type Benefit = {
@@ -55,6 +55,11 @@ type ContentfulSectionTitle = {
   title: string
 };
 
+type ContentfulNavbarTitle = ContentfulSectionTitle & {
+  url: string,
+  colors: [string, string]
+};
+
 type ContentfulFormField = {
   contentfulid: string,
   title: string,
@@ -88,7 +93,7 @@ type ContentfulSponsorCategory = {
 };
 
 type ContentfulImage = {
-  image: Gatsbyimage & { title: string }
+  image: GatsbyImage & { title: string }
 };
 
 interface All<T> {
