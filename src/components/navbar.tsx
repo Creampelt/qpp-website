@@ -44,7 +44,7 @@ const Navbar: React.FunctionComponent<NavbarProps> = ({ links, pos, setPos }) =>
       </a>
       <ul className={pos.toString()}>
         {links.map(({title, to}, i) => (
-          <li key={to}>
+          <li key={to} onClick={() => setPos(i)}>
             <a
               ref={(ref) => linkRefs.current[i] = ref}
               onClick={(e) => { e.preventDefault(); setPos(i) }}
@@ -69,7 +69,7 @@ const Navbar: React.FunctionComponent<NavbarProps> = ({ links, pos, setPos }) =>
         </div>
       </ul>
     </nav>
-  )
+  );
 };
 
 export default Navbar;

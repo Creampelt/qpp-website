@@ -7,6 +7,7 @@ import GetInvolved from "./get-involved";
 import Sponsors from "./sponsors";
 import logo from "../images/logo_alpha_2048.png";
 import "../stylesheets/index.scss";
+import { graphql, useStaticQuery } from "gatsby";
 
 const links: NavLink[] = [
   {
@@ -32,7 +33,39 @@ type IndexProps = {
   section: number
 };
 
+type Query = {
+  favicon: {
+    image: {
+      file: {
+        url: string
+      }
+    }
+  },
+  title: {
+    content: {
+      content: string
+    }
+  }
+};
+
 const Main: React.FunctionComponent<IndexProps> = ({ section }) => {
+  const data: Query = useStaticQuery(graphql`
+    {
+      favicon: contentfulImage(contentfulid: { eq: "favicon" }) {
+        image {
+          file {
+            url
+          }
+        }
+      }
+      title: contentfulText(contentfulid: { eq: "siteTitle" }) {
+        content {
+          content
+        }
+      }
+    }
+  `);
+
   const [pos, setPos] = React.useState(section);
   const [isScrolling, _setIsScrolling] = React.useState(false);
   const about = React.useRef<HTMLDivElement>(null);
@@ -106,9 +139,9 @@ const Main: React.FunctionComponent<IndexProps> = ({ section }) => {
     <div>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Q++ &bull; UT Austin</title>
+        <title>{data.title.content.content}</title>
         <link rel={"canonical"} href={"https://texasqpp.com"} />
-        <link rel={"icon"} type={"image/x-icon"} href={logo} />
+        <link rel={"icon"} type={"image/x-icon"} href={data.favicon.image.file.url} />
       </Helmet>
       <Navbar links={links} pos={pos} setPos={scrollTo} />
       <main>

@@ -20,17 +20,15 @@ const Category: React.FunctionComponent<CategoryProps> = ({ title, sponsors }) =
     <div>
       {sponsors.map((sponsor, i) => {
         const image = getImage(sponsor.logo.gatsbyImageData);
-        return (
+        return image ? (
           <a key={i} href={sponsor.website} target={"_blank"}>
-            {image && (
-              <GatsbyImage
-                objectFit={"contain"}
-                image={image}
-                alt={sponsor.name}
-              />
-            )}
+            <GatsbyImage
+              image={image}
+              objectFit={"contain"}
+              alt={sponsor.name}
+            />
           </a>
-        )
+        ) : null;
       })}
     </div>
   </div>

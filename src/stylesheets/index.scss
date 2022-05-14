@@ -296,15 +296,14 @@ form {
         justify-content: center;
         flex-direction: column;
         text-align: center;
+        padding: 20px;
+
+        &:hover {
+          transform: translate(-5px, -5px);
+        }
 
         img {
           width: 250px;
-          object-fit: contain;
-          margin: 20px;
-        }
-
-        &:hover img {
-          transform: translate(-5px, -5px);
         }
       }
     }
