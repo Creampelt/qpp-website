@@ -4,7 +4,6 @@ import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import { graphql, useStaticQuery } from "gatsby";
 
 type Query = {
-  links: All<ContentfulNavbarTitle>,
   logo: ContentfulImage
 }
 
@@ -14,21 +13,9 @@ type NavbarProps = {
   setPos: (i: number) => void
 };
 
-const Navbar: React.FunctionComponent<NavbarProps> = ({ pos, setPos }) => {
+const Navbar: React.FunctionComponent<NavbarProps> = ({ links, pos, setPos }) => {
   const data: Query = useStaticQuery(graphql`
     {
-      links: allContentfulSectionTitle(
-        filter: { displayInNavbar: { eq: true } }
-        sort: { fields: index }
-      ) {
-        edges {
-          node {
-            title
-            url
-            colors
-          }
-        }
-      }
       logo: contentfulImage(contentfulid: { eq: "logo" }) {
         image {
           gatsbyImageData(layout: CONSTRAINED, width: 50)
@@ -37,22 +24,23 @@ const Navbar: React.FunctionComponent<NavbarProps> = ({ pos, setPos }) => {
     }
   `);
 
-  const links: NavLink[] = data.links.edges.map(({ node }) => ({
-    title: node.title,
-    to: node.url,
-    colors: node.colors
-  }));
   const logo = getImage(data.logo.image.gatsbyImageData);
-
   const linkRefs = React.useRef(Array(links.length).fill(null));
+  const [isMobile, setIsMobile] = React.useState(false);
   const [width, setWidth] = React.useState(0);
   const [offset, setOffset] = React.useState(0);
+  const [navOpen, setNavOpen] = React.useState(false);
 
-  const getWidth = (i: number) => (
-    i == -1 ? 0 : linkRefs.current[i]?.getBoundingClientRect().width
-  );
+  const getWidth = (i: number): number => {
+    if (i === -1)
+      return 0;
+    const current = linkRefs.current[i];
+    if (!current)
+      return 0;
+    return current.getBoundingClientRect().width;
+  };
 
-  const getOffset = (pos: number) => {
+  const getOffset = (pos: number): number => {
     let o = 0;
     for (let i: number = 0; i < pos; i++) {
       o += getWidth(i) + 40;
@@ -60,12 +48,42 @@ const Navbar: React.FunctionComponent<NavbarProps> = ({ pos, setPos }) => {
     return o;
   };
 
-  const getUnderlineWidth = (pos: number, width: number, max: number) => {
+  const getUnderlineWidth = (pos: number, width: number, max: number): number => {
     const min = 15;
     return pos == -1 ? 0 : pos * (width - min * 2) / (max - 1) + min;
+  };
+
+  const toggleNavOpen = () => {
+    setNavOpen((prev) => !prev);
+  };
+
+  const setNavPos = (pos: number) => {
+    setPos(pos);
+    if (isMobile) {
+      setTimeout(() => setNavOpen(false), 200);
+    }
   }
 
   const underlineWidth = getUnderlineWidth(pos, width, links.length);
+  const underlineSpanStyle = (index: 0 | 1) => {
+    let style = {};
+    if (!isMobile && index === 0) {
+      style = { width: underlineWidth };
+    } else if (!isMobile) {
+      style = { width: width - underlineWidth, left: underlineWidth };
+    }
+    return {
+      ...style,
+      backgroundColor: pos === -1 ? links[0].colors[index] : links[pos].colors[index]
+    };
+  }
+
+  React.useEffect(() => {
+    const determineIsMobile = () => setIsMobile(window.innerWidth <= 500);
+    determineIsMobile();
+    window.addEventListener("resize", determineIsMobile);
+    return () => window.removeEventListener("resize", determineIsMobile);
+  }, []);
 
   React.useEffect(() => {
     setWidth(getWidth(pos));
@@ -75,14 +93,19 @@ const Navbar: React.FunctionComponent<NavbarProps> = ({ pos, setPos }) => {
   return (
     <nav>
       <a href={"/"} onClick={(e) => { e.preventDefault(); setPos(-1) }}>
-        {logo && <GatsbyImage className={"logo"} alt={"Q++"} image={logo} />}
+        {logo && <GatsbyImage className={"logo"} alt={"Q++"} image={logo} objectFit={"contain"} />}
       </a>
-      <ul className={pos.toString()}>
-        {links.map(({title, to}, i) => (
-          <li key={to} onClick={() => setPos(i)}>
+      <div className={"hamburger"} onClick={toggleNavOpen}>
+        <span />
+        <span />
+        <span />
+      </div>
+      <ul className={`${navOpen || !isMobile ? "" : "closed"} ${pos.toString()}`}>
+        {links.map(({ title, to }, i) => (
+          <li key={to} onClick={() => setNavPos(i)}>
             <a
               ref={(ref) => linkRefs.current[i] = ref}
-              onClick={(e) => { e.preventDefault(); setPos(i) }}
+              onClick={(e) => { e.preventDefault(); setNavPos(i) }}
               href={to}
             >
               {title}
@@ -91,16 +114,13 @@ const Navbar: React.FunctionComponent<NavbarProps> = ({ pos, setPos }) => {
         ))}
         <div
           className={"underline"}
-          style={{ width, transform: `translateX(${offset}px)` }}
+          style={isMobile ? {
+            transform: pos === -1 ? "scaleY(0)" : `scaleY(1) translateY(${pos}00%)`,
+            height: pos === -1 ? "0" : "24.5px"
+          } : { width, transform: `translateX(${offset}px)` }}
         >
-          <span style={{
-            backgroundColor: pos == -1 ? links[0].colors[0] : links[pos].colors[0],
-            width: underlineWidth
-          }} />
-          <span style={{
-            backgroundColor: pos == -1 ? links[0].colors[1] : links[pos].colors[1],
-            width: width - underlineWidth, left: underlineWidth
-          }} />
+          <span style={underlineSpanStyle(0)} />
+          <span style={underlineSpanStyle(1)} />
         </div>
       </ul>
     </nav>

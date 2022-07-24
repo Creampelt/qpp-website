@@ -1,5 +1,6 @@
-@use "colors";
+@use "constants";
 @use "sass:list";
+@use "sass:math";
 
 * {
   box-sizing: border-box;
@@ -8,12 +9,13 @@
 body {
   padding: 0;
   margin: 0;
-  font-family: "Roboto", "Times New Roman", sans-serif;
+  font-family: constants.$body-font;
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Roboto Mono", "Times New Roman", monospace;
+  font-family: constants.$header-font;
   text-transform: lowercase;
 }
 
@@ -25,62 +27,31 @@ h3 {
   font-size: 1.5em;
 }
 
-.heading {
-  text-align: left;
-  width: 100%;
-  display: flex;
-  font-size: 3em;
-  align-items: baseline;
-  position: relative;
-  left: -100px;
-
-  h1 {
-    margin: 0;
-  }
-
-  .bullet {
-    width: calc(55px * 1.73205081 / 2);
-    height: 55px;
-    clip-path: polygon(0% 100%, 0% 0%, 100% 50%);
-    margin-right: 15px;
-
-    div {
-      width: 100%;
-      height: calc(55px / 2);
-    }
-  }
-}
-
 .typewriter {
-  .text {
-    overflow: hidden; /* Ensures the content is not revealed until the animation */
-    border-right: .15em solid colors.$blue; /* The typewriter cursor */
-    white-space: nowrap; /* Keeps the content on a single line */
-    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-    letter-spacing: .075em; /* Adjust as needed */
-    animation: typing 2s steps(36, end), blink-caret 4.5s step-end infinite;
-  }
-
-  /* The typing effect */
-  @keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
+  .cursor {
+    width: 0.15em;
+    height: 1.15em;
+    display: inline-block;
+    position: relative;
+    top: 0.2em;
+    left: 0.075em;
+    animation: blink-caret 4.5s step-end infinite;
   }
 
   /* The typewriter cursor effect */
   @keyframes blink-caret {
-    0%, 17%, 33%, 50%, 67%, 83%, 100% { border-color: transparent }
-    8% { border-color: colors.$red; }
-    25% { border-color: colors.$orange; }
-    42% { border-color: colors.$yellow; }
-    59% { border-color: colors.$green; }
-    75% { border-color: colors.$blue; }
-    92% { border-color: colors.$purple; }
+    0%, 17%, 33%, 50%, 67%, 83%, 100% { background-color: transparent }
+    8% { background-color: constants.$red; }
+    25% { background-color: constants.$orange; }
+    42% { background-color: constants.$yellow; }
+    59% { background-color: constants.$green; }
+    75% { background-color: constants.$blue; }
+    92% { background-color: constants.$purple; }
   }
 }
 
 .appear-on-scroll {
-  transition: colors.$transition;
+  transition: constants.$transition;
 
   &.hidden {
     opacity: 0;
@@ -95,21 +66,74 @@ main {
   width: 100%;
 }
 
+.heading {
+  text-align: left;
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  position: relative;
+  left: -50px;
+
+  h1 {
+    margin: 0;
+    font-size: constants.$heading-font-size;
+    hyphens: auto;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+
+    @media screen and (max-width: constants.$heading-font-shrink-point) {
+      font-size: calc(#{math.div(constants.$heading-font-size, constants.$heading-font-shrink-point)} * 100vw);
+    }
+  }
+
+  .bullet {
+    width: calc(55px * 1.73205081 / 2);
+    height: 55px;
+    clip-path: polygon(0% 100%, 0% 0%, 100% 50%);
+    flex: 0 0 auto;
+    margin-right: 15px;
+
+    div {
+      width: 100%;
+      height: calc(55px / 2);
+    }
+  }
+
+  @media screen and (max-width: constants.$mobile-width) {
+    left: 0;
+
+    .bullet {
+      display: none;
+    }
+  }
+}
+
 .section {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   width: 100%;
-  padding: 100px 200px;
+  padding: 100px 10vw; //200px;
+
+  @media screen and (min-width: calc(200px / 0.1)) {
+    padding: 100px 10vw;
+  }
+
+  @media screen and (max-width: constants.$mobile-width) {
+    padding: 60px 30px;
+  }
+
+  &:last-of-type {
+    min-height: 100vh;
+  }
 
   @for $i from 1 through 3 {
     &:nth-of-type(3n + #{($i + 1) % 3}) .heading .bullet div {
       &:first-of-type {
-        background-color: list.nth(colors.$rainbow, 2 * $i - 1);
+        background-color: list.nth(constants.$rainbow, 2 * $i - 1);
       }
 
       &:last-of-type {
-        background-color: list.nth(colors.$rainbow, 2 * $i);
+        background-color: list.nth(constants.$rainbow, 2 * $i);
       }
     }
   }
@@ -119,22 +143,32 @@ main {
   justify-content: center;
   align-items: center;
   text-align: center;
+  min-height: 100vh;
 
-  h2 {
+  .typewriter .text {
+    font-family: constants.$header-font;
+    font-weight: bold;
     font-size: 1.5em;
+    text-transform: lowercase;
   }
 
   .logo-center {
     max-width: 500px;
     width: 75vw;
+    margin: 60px 0;
   }
 }
 
 .about {
-  padding: 100px 60px;
+  padding-right: 60px;
+  padding-left: 60px;
 
   .intro {
-    padding: 0 140px;
+    padding: 0 0 0 140px;
+
+    @media screen and (max-width: constants.$heading-font-shrink-point) {
+      padding: 0;
+    }
 
     .about-intro {
       width: 90%;
@@ -179,7 +213,6 @@ main {
         object-fit: contain;
       }
     }
-
   }
 }
 
@@ -189,7 +222,7 @@ form {
   margin: 10px 0;
 
   input, select {
-    font-family: colors.$body-font;
+    font-family: constants.$body-font;
     font-size: 1em;
     padding: 10px;
     border: solid 1px black;
@@ -197,18 +230,18 @@ form {
     margin: 10px;
 
     &::placeholder {
-      font-family: colors.$header-font;
+      font-family: constants.$header-font;
       text-transform: lowercase;
     }
   }
 
   select {
-    font-family: colors.$header-font;
+    font-family: constants.$header-font;
     font-size: 1em;
   }
 
   input[type=button], input[type=submit], input[type=reset] {
-    font-family: colors.$header-font;
+    font-family: constants.$header-font;
     text-transform: lowercase;
     cursor: pointer;
   }
@@ -250,7 +283,7 @@ form {
 
         @for $i from 1 through 6 {
           &:nth-of-type(6n + #{$i}) .bullet {
-            background-color: list.nth(colors.$rainbow, $i);
+            background-color: list.nth(constants.$rainbow, $i);
           }
         }
 
@@ -287,28 +320,30 @@ form {
   }
 }
 
-.sponsors {
-  .category {
-    div {
+.sponsors .category {
+  div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+
+    @media screen and (max-width: constants.$mobile-width) {
+      justify-content: center;
+    }
+
+    a {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: left;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 20px;
 
-      a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        text-align: center;
-        padding: 20px;
+      &:hover {
+        transform: translate(-5px, -5px);
+      }
 
-        &:hover {
-          transform: translate(-5px, -5px);
-        }
-
-        img {
-          width: 250px;
-        }
+      img {
+        width: 250px;
       }
     }
   }

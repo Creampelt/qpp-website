@@ -8,24 +8,6 @@ import Sponsors from "./sponsors";
 import "../stylesheets/index.scss";
 import { graphql, useStaticQuery } from "gatsby";
 
-const links: NavLink[] = [
-  {
-    title: "About",
-    to: "/about",
-    colors: ["#ff0000", "#f4860a"]
-  },
-  {
-    title: "Get Involved",
-    to: "/get-involved",
-    colors: ["#f1e405", "#057a25"]
-  },
-  {
-    title: "Sponsors",
-    to: "/sponsors",
-    colors: ["#024bf3", "#700983"]
-  }
-];
-
 const BUFFER = 10;
 
 type IndexProps = {
@@ -44,7 +26,8 @@ type Query = {
     content: {
       content: string
     }
-  }
+  },
+  links: All<ContentfulNavbarTitle>
 };
 
 const Main: React.FunctionComponent<IndexProps> = ({ section }) => {
@@ -62,8 +45,26 @@ const Main: React.FunctionComponent<IndexProps> = ({ section }) => {
           content
         }
       }
+      links: allContentfulSectionTitle(
+        filter: { displayInNavbar: { eq: true } }
+        sort: { fields: index }
+      ) {
+        edges {
+          node {
+            title
+            url
+            colors
+          }
+        }
+      }
     }
   `);
+
+  const links: NavLink[] = data.links.edges.map(({ node }) => ({
+    title: node.title,
+    to: node.url,
+    colors: node.colors
+  }));
 
   const [pos, setPos] = React.useState(section);
   const [isScrolling, _setIsScrolling] = React.useState(false);
@@ -137,7 +138,8 @@ const Main: React.FunctionComponent<IndexProps> = ({ section }) => {
   return (
     <div>
       <Helmet>
-        <meta charSet="utf-8" />
+        <meta charSet={"utf-8"} />
+        <meta name={"viewport"} content={"width=device-width, initial-scale=1"} />
         <title>{data.title.content.content}</title>
         <link rel={"canonical"} href={"https://texasqpp.com"} />
         <link rel={"icon"} type={"image/x-icon"} href={data.favicon.image.file.url} />

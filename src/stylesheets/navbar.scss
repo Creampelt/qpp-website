@@ -1,7 +1,8 @@
-@use "colors";
+@use "constants";
 
 nav {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   width: 100vw;
   position: fixed;
@@ -20,20 +21,24 @@ nav {
     }
   }
 
+  .hamburger {
+    display: none;
+  }
+
   ul {
-    display: flex;
     position: relative;
     padding: 0;
+    display: flex;
 
     .underline {
-      transition: colors.$transition;
+      transition: constants.$transition;
       height: 10px;
       position: absolute;
       bottom: -15px;
       left: 20px;
 
       span {
-        transition: colors.$transition;
+        transition: constants.$transition;
         position: absolute;
         height: 100%;
       }
@@ -49,12 +54,86 @@ nav {
         position: relative;
         text-decoration: none;
         color: inherit;
-        font-family: colors.$header-font;
+        font-family: constants.$header-font;
       }
 
       &:hover a {
         top: -3px;
         left: -3px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: constants.$mobile-width) {
+  nav {
+    padding: 15px;
+
+    .logo {
+      height: 40px;
+    }
+
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 55px;
+      height: 45px;
+      padding: 10px;
+      border: solid 2px black;
+
+      &:active {
+        transform: translate(3px, -3px);
+        box-shadow: #000 -3px 3px;
+      }
+
+      span {
+        width: 100%;
+        height: 4px;
+        background-color: constants.$text;
+        border-radius: 10px;
+      }
+    }
+
+    ul {
+      position: absolute;
+      border: solid 2px black;
+      flex-direction: column;
+      top: 42px;
+      right: 15px;
+      padding: 15px 15px 15px 35px;
+      box-shadow: #000 -3px 3px;
+      background-color: #fff;
+
+      &.closed {
+        display: none;
+      }
+
+      li {
+        padding: 0;
+      }
+
+      .underline {
+        width: 15px;
+        height: 24.5px;
+        left: 10px;
+        bottom: unset;
+        top: 15px;
+
+        span {
+          width: 100%;
+          height: 20px;
+          top: calc((100% - 20px) / 2);
+        }
+
+        span:first-child {
+          clip-path: polygon(0 0, 100% 50%, 0 50%);
+        }
+
+        span:last-child {
+          clip-path: polygon(0 50%, 100% 50%, 0 100%);
+        }
       }
     }
   }

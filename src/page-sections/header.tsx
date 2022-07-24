@@ -1,6 +1,7 @@
 import * as React from "react";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import { graphql, useStaticQuery } from "gatsby";
+import Typewriter from "../components/typewriter";
 import "../stylesheets/index.scss";
 
 type Query = {
@@ -28,10 +29,8 @@ const Header: React.FunctionComponent = () => {
   const image = getImage(data.logo.image.gatsbyImageData);
   return (
     <div className={"section index"}>
-      {image && <GatsbyImage className={"logo-center"} image={image} alt={data.logo.image.title} />}
-      <div className={"typewriter"}>
-        <h2 className={"text"}>{data.logoSubtitle.content.content}</h2>
-      </div>
+      {image && <GatsbyImage className={"logo-center"} image={image} alt={data.logo.image.title} objectFit={"contain"} />}
+      <Typewriter duration={2} text={data.logoSubtitle.content.content} />
     </div>
   );
 };
