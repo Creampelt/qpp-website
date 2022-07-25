@@ -231,7 +231,7 @@ form {
   flex-direction: column;
   margin: 10px 0;
 
-  input, select {
+  input, button, select {
     font-family: constants.$body-font;
     font-size: 1em;
     padding: 10px;
@@ -271,20 +271,38 @@ form {
     }
   }
 
-  input[type=button], input[type=submit], input[type=reset] {
+  input[type=button], .submit, input[type=reset] {
     font-family: constants.$header-font;
     text-transform: lowercase;
     cursor: pointer;
   }
 
-  input[type=submit] {
+  .submit {
     border: none;
     background-color: black;
     color: white;
+    position: relative;
 
     &:hover {
       box-shadow: 3px 3px #000000;
       transform: translate(-3px, -3px);
+    }
+
+    &.loading {
+      color: black;
+
+      .loader {
+        visibility: visible;
+      }
+    }
+
+    .loader {
+      visibility: hidden;
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      top: calc((100% - 30px) / 2);
+      left: calc((100% - 30px) / 2);
     }
   }
 
@@ -298,6 +316,19 @@ form {
     &:hover {
       box-shadow: 5px 5px #000000;
       transform: translate(-5px, -5px);
+    }
+  }
+
+  .buttons {
+    display: flex;
+    align-items: center;
+
+    .status {
+      margin: 0 10px;
+
+      &.error {
+        color: constants.$red;
+      }
     }
   }
 }

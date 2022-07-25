@@ -46,10 +46,13 @@ type Sponsor = {
   website: string
 };
 
-type SponsorCategory = {
-  title: string,
-  sponsors: Sponsor[]
+type FormState = {
+  [key: string]: string
 };
+
+//////////////////////
+// Contentful Types //
+//////////////////////
 
 type ContentfulSectionTitle = {
   title: string
