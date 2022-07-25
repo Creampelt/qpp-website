@@ -1,4 +1,5 @@
 import * as React from "react";
+import Select from "./select";
 
 type FormProps = {
   data: FormField[]
@@ -15,12 +16,7 @@ const Field: React.FunctionComponent<FieldProps> = ({ fieldData }) => {
     case "email":
       return <input type={"email"} placeholder={fieldData.title} />
     case "dropdown":
-      return (
-        <select defaultValue={"-1"}>
-          <option key={"-1"} disabled>{fieldData.title.toLowerCase()}</option>
-          {fieldData.options.map((option) => <option key={option}>{option}</option>)}
-        </select>
-      )
+      return <Select {...fieldData} />;
     default:
       return null;
   }

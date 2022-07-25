@@ -90,6 +90,12 @@ const Navbar: React.FunctionComponent<NavbarProps> = ({ links, pos, setPos }) =>
     setOffset(getOffset(pos));
   }, [linkRefs, pos]);
 
+  React.useEffect(() => {
+    const closeNav = () => setNavOpen(false);
+    window.addEventListener("scroll", closeNav);
+    return () => window.removeEventListener("scroll", closeNav);
+  });
+
   return (
     <nav>
       <a href={"/"} onClick={(e) => { e.preventDefault(); setPos(-1) }}>
