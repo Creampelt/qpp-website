@@ -35,7 +35,7 @@ const GetInvolved = React.forwardRef<HTMLDivElement>((_, ref) => {
       getInvolvedTitle: contentfulSectionTitle(contentfulid: { eq: "getInvolved" }) {
         title
       }
-      formFields: allContentfulFormField(sort: { fields: index }) {
+      formFields: allContentfulFormField(filter: { formId: { eq: "getInvolved" } }, sort: { fields: index }) {
         edges {
           node {
             contentfulid
@@ -67,13 +67,20 @@ const GetInvolved = React.forwardRef<HTMLDivElement>((_, ref) => {
     end: moment(node.end, DATE_FORMAT)
   })).filter(({ start }) => moment().isSameOrBefore(start, "day"));
 
+  const submitGetInvolvedForm = (formData: FormState) => {
+    console.log(formData);
+  }
+
   return (
     <div ref={ref} className={"section get-involved"}>
       <Heading>{data.getInvolvedTitle.title}</Heading>
-      <Form data={data.formFields.edges.map(({ node }) => ({
-        ...node,
-        id: node.contentfulid
-      }))} />
+      <Form
+        data={data.formFields.edges.map(({ node }) => ({
+          ...node,
+          id: node.contentfulid
+        }))}
+        onSubmit={submitGetInvolvedForm}
+      />
       <div className={"upcoming-events"}>
         <h2>{data.upcomingEventsTitle.title}</h2>
         <div className={"events-list"}>
