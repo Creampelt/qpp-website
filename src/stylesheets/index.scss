@@ -323,12 +323,9 @@ form {
     display: flex;
     align-items: center;
 
-    .status {
+    .error {
       margin: 0 10px;
-
-      &.error {
-        color: constants.$red;
-      }
+      color: constants.$red;
     }
   }
 }

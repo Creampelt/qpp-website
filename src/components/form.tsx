@@ -4,12 +4,8 @@ import loader from "../images/loader.svg";
 const EMAIL_REGEX = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 
 type FormProps = {
-  data: FormField[],
-  isLoading: boolean,
-  onSubmit: (data: FormState) => void,
-  errorMessage: string | null,
-  setErrorMessage: React.Dispatch<React.SetStateAction<string|null>>
-  successMessage: string | null
+  formName: string,
+  data: FormField[]
 };
 
 type FieldProps = {
@@ -47,7 +43,6 @@ const Field: React.FunctionComponent<FieldProps> = ({ fieldData, value, setValue
         />
       );
     case "email":
-      // TODO: validate email input
       return (
         <input
           type={"email"}
@@ -63,8 +58,10 @@ const Field: React.FunctionComponent<FieldProps> = ({ fieldData, value, setValue
   }
 }
 
-const Form: React.FunctionComponent<FormProps> = ({ data, isLoading, onSubmit, errorMessage, setErrorMessage, successMessage }) => {
+const Form: React.FunctionComponent<FormProps> = ({ formName, data }) => {
   const [formData, setFormData] = React.useState<FormState>({});
+  const [errorMessage, setErrorMessage] = React.useState<string|null>(null);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const setField = (key: string, value: string) => {
     setFormData((state) => ({ ...state, [key]: value }));
@@ -95,14 +92,42 @@ const Form: React.FunctionComponent<FormProps> = ({ data, isLoading, onSubmit, e
     return true;
   }
 
-  const submitForm: React.FormEventHandler = (e) => {
+  const encode = (data: FormState) => {
+    return Object.keys(data)
+      .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+      .join("&");
+  }
+
+  const submitForm: React.FormEventHandler = async (e) => {
     e.preventDefault();
-    if (validate())
-      onSubmit(formData);
+    if (validate()) {
+      try {
+        setIsLoading(true);
+        await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: encode({ "form-name": formName, ...formData })
+        });
+        alert("Thanks! Your request has been submitted.");
+      } catch (e) {
+        alert(e);
+      } finally {
+        setIsLoading(false);
+      }
+    }
   };
 
   return (
-    <form onSubmit={submitForm} noValidate onReset={() => setFormData({})}>
+    <form
+      name={formName}
+      method={"post"}
+      data-netlify={"true"}
+      data-netlify-honeypot={"bot-field"}
+      onSubmit={submitForm}
+      onReset={() => setFormData({})}
+      noValidate
+    >
+      <input type={"hidden"} name={"form-name"} value={formName} />
       {data.map((fieldData) => (
         <Field
           fieldData={fieldData}
@@ -117,9 +142,9 @@ const Form: React.FunctionComponent<FormProps> = ({ data, isLoading, onSubmit, e
           Submit
         </button>
         <input type={"reset"} value={"Clear"} />
-        {(errorMessage || successMessage) && (
-          <p className={`status ${errorMessage ? "error" : "success"}`}>
-            {errorMessage || successMessage}
+        {errorMessage && (
+          <p className={"error"}>
+            {errorMessage}
           </p>
         )}
       </div>

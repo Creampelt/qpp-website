@@ -66,51 +66,21 @@ const GetInvolved = React.forwardRef<HTMLDivElement>((_, ref) => {
     }
   `);
 
-  const [formIsLoading, setFormIsLoading] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState<string|null>(null);
-  const [successMessage, setSuccessMessage] = React.useState<string|null>(null);
-
   const events = data.events.edges.map(({ node }) => ({
     ...node,
     start: moment(node.start, DATE_FORMAT),
     end: moment(node.end, DATE_FORMAT)
   })).filter(({ start }) => moment().isSameOrBefore(start, "day"));
 
-  const submitGetInvolvedForm = async (formData: FormState) => {
-    setFormIsLoading(true);
-    try {
-      const { data }: AxiosResponse<ServerSuccessData> = await axios.post(
-        FUNCTION_ENDPOINT,
-        formData
-      );
-      setSuccessMessage(data.message);
-      setErrorMessage(null);
-    } catch (e) {
-      const error = e as AxiosError<ServerErrorData>;
-      if (!error.response) {
-        setErrorMessage("Something went wrong. Please try again later.");
-      } else {
-        setErrorMessage(error.response.data.error);
-      }
-      setSuccessMessage(null);
-    } finally {
-      setFormIsLoading(false);
-    }
-  };
-
   return (
     <div ref={ref} className={"section get-involved"}>
       <Heading>{data.getInvolvedTitle.title}</Heading>
       <Form
+        formName={"get-involved"}
         data={data.formFields.edges.map(({ node }) => ({
           ...node,
           id: node.contentfulid
         }))}
-        isLoading={formIsLoading}
-        onSubmit={submitGetInvolvedForm}
-        errorMessage={errorMessage}
-        setErrorMessage={setErrorMessage}
-        successMessage={successMessage}
       />
       <div className={"upcoming-events"}>
         <h2>{data.upcomingEventsTitle.title}</h2>
