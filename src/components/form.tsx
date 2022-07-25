@@ -28,7 +28,7 @@ type SelectProps = {
 const Select: React.FunctionComponent<SelectProps> = ({ title, options, value = "-1", setValue }) => (
   <div className={"select-container"}>
     <select onChange={(e) => setValue(e.target.value)}>
-      <option key={"-1"} disabled={!!value} selected>{title.toLowerCase()}</option>
+      <option key={"-1"} disabled selected={value === "-1"}>{title.toLowerCase()}</option>
       {options.map((option) => <option selected={value === option} key={option}>{option}</option>)}
     </select>
     <span className={"dropdown-arrow"} />
@@ -102,7 +102,7 @@ const Form: React.FunctionComponent<FormProps> = ({ data, isLoading, onSubmit, e
   };
 
   return (
-    <form onSubmit={submitForm} noValidate>
+    <form onSubmit={submitForm} noValidate onReset={() => setFormData({})}>
       {data.map((fieldData) => (
         <Field
           fieldData={fieldData}
