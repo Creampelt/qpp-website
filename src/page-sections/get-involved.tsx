@@ -2,9 +2,11 @@ import * as React from "react";
 import Heading from "../components/heading";
 import Form from "../components/form";
 import moment from "moment";
+import axios from "axios";
 import { graphql, useStaticQuery } from "gatsby";
 
 const DATE_FORMAT = "YYYY-MM-DD hh:mm A";
+const FUNCTION_ENDPOINT = "/.netlify/functions/submit-get-involved-form";
 
 type Query = {
   getInvolvedTitle: ContentfulSectionTitle,
@@ -68,8 +70,10 @@ const GetInvolved = React.forwardRef<HTMLDivElement>((_, ref) => {
   })).filter(({ start }) => moment().isSameOrBefore(start, "day"));
 
   const submitGetInvolvedForm = (formData: FormState) => {
-    console.log(formData);
-  }
+    axios.post(FUNCTION_ENDPOINT, formData)
+      .then((result) => console.log(result))
+      .catch((e) => console.error(e));
+  };
 
   return (
     <div ref={ref} className={"section get-involved"}>

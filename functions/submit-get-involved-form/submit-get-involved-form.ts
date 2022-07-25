@@ -1,5 +1,8 @@
 import { Handler } from "@netlify/functions";
 import sgMail from "@sendgrid/mail";
+import dotEnv from "dotenv";
+
+dotEnv.config();
 
 export const handler: Handler = async (event) => {
   const params = JSON.parse(event.body || "{}");
