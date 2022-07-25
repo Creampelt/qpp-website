@@ -2,7 +2,7 @@ import * as React from "react";
 import Heading from "../components/heading";
 import Form from "../components/form";
 import moment from "moment";
-import axios from "axios";
+import axios, { AxiosResponse, AxiosError } from "axios";
 import { graphql, useStaticQuery } from "gatsby";
 
 const DATE_FORMAT = "YYYY-MM-DD hh:mm A";
@@ -14,6 +14,9 @@ type Query = {
   upcomingEventsTitle: ContentfulSectionTitle,
   events: All<ContentfulEvent>
 };
+
+type ServerSuccessData = { message: string };
+type ServerErrorData = { error: string };
 
 const EventElement: React.FunctionComponent<UpcomingEvent> = ({ name, location, start, end }) => (
   <div className={"event"} key={`${name}_${location}_${start.format(DATE_FORMAT)}_${end.format(DATE_FORMAT)}`}>
@@ -63,16 +66,36 @@ const GetInvolved = React.forwardRef<HTMLDivElement>((_, ref) => {
     }
   `);
 
+  const [formIsLoading, setFormIsLoading] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState<string|null>(null);
+  const [successMessage, setSuccessMessage] = React.useState<string|null>(null);
+
   const events = data.events.edges.map(({ node }) => ({
     ...node,
     start: moment(node.start, DATE_FORMAT),
     end: moment(node.end, DATE_FORMAT)
   })).filter(({ start }) => moment().isSameOrBefore(start, "day"));
 
-  const submitGetInvolvedForm = (formData: FormState) => {
-    axios.post(FUNCTION_ENDPOINT, formData)
-      .then((result) => console.log(result))
-      .catch((e) => console.error(e));
+  const submitGetInvolvedForm = async (formData: FormState) => {
+    setFormIsLoading(true);
+    try {
+      const { data }: AxiosResponse<ServerSuccessData> = await axios.post(
+        FUNCTION_ENDPOINT,
+        formData
+      );
+      setSuccessMessage(data.message);
+      setErrorMessage(null);
+    } catch (e) {
+      const error = e as AxiosError<ServerErrorData>;
+      if (!error.response) {
+        setErrorMessage("Something went wrong. Please try again later.");
+      } else {
+        setErrorMessage(error.response.data.error);
+      }
+      setSuccessMessage(null);
+    } finally {
+      setFormIsLoading(false);
+    }
   };
 
   return (
@@ -83,7 +106,11 @@ const GetInvolved = React.forwardRef<HTMLDivElement>((_, ref) => {
           ...node,
           id: node.contentfulid
         }))}
+        isLoading={formIsLoading}
         onSubmit={submitGetInvolvedForm}
+        errorMessage={errorMessage}
+        setErrorMessage={setErrorMessage}
+        successMessage={successMessage}
       />
       <div className={"upcoming-events"}>
         <h2>{data.upcomingEventsTitle.title}</h2>

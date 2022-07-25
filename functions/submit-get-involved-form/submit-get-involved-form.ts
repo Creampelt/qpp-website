@@ -38,7 +38,7 @@ export const handler: Handler = async (event) => {
     await sgMail.send(msg);
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "Email sent successfully." })
+      body: JSON.stringify({ message: "Thanks for signing up! Your information has been submitted successfully." })
     };
   } catch (e) {
     const error = e as Error;

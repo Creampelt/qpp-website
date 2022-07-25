@@ -1,8 +1,15 @@
 import * as React from "react";
+import loader from "../images/loader.svg";
+
+const EMAIL_REGEX = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 
 type FormProps = {
   data: FormField[],
-  onSubmit: (data: FormState) => void
+  isLoading: boolean,
+  onSubmit: (data: FormState) => void,
+  errorMessage: string | null,
+  setErrorMessage: React.Dispatch<React.SetStateAction<string|null>>
+  successMessage: string | null
 };
 
 type FieldProps = {
@@ -56,20 +63,46 @@ const Field: React.FunctionComponent<FieldProps> = ({ fieldData, value, setValue
   }
 }
 
-const Form: React.FunctionComponent<FormProps> = ({ data, onSubmit }) => {
+const Form: React.FunctionComponent<FormProps> = ({ data, isLoading, onSubmit, errorMessage, setErrorMessage, successMessage }) => {
   const [formData, setFormData] = React.useState<FormState>({});
 
   const setField = (key: string, value: string) => {
     setFormData((state) => ({ ...state, [key]: value }));
   };
 
+  const validate = (): boolean => {
+    for (const field of data) {
+      const value = formData[field.id];
+      if (!value || value.length === 0) {
+        setErrorMessage("Please fill out all fields.");
+        return false;
+      }
+      switch (field.type) {
+        case "email":
+          if (!value.match(EMAIL_REGEX)) {
+            setErrorMessage("Please enter a valid email address.");
+            return false;
+          }
+          break;
+        case "dropdown":
+          if (!field.options.includes(value)) {
+            setErrorMessage("Please select a valid option from the dropdown menu.");
+            return false;
+          }
+          break;
+      }
+    }
+    return true;
+  }
+
   const submitForm: React.FormEventHandler = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    if (validate())
+      onSubmit(formData);
   };
 
   return (
-    <form onSubmit={submitForm}>
+    <form onSubmit={submitForm} noValidate>
       {data.map((fieldData) => (
         <Field
           fieldData={fieldData}
@@ -79,8 +112,16 @@ const Form: React.FunctionComponent<FormProps> = ({ data, onSubmit }) => {
         />
       ))}
       <div className={"buttons"}>
-        <input type={"submit"}/>
+        <button type={"submit"} className={`submit ${isLoading ? "loading" : ""}`}>
+          <img className={"loader"} src={loader} alt={"Loading..."} />
+          Submit
+        </button>
         <input type={"reset"} value={"Clear"} />
+        {(errorMessage || successMessage) && (
+          <p className={`status ${errorMessage ? "error" : "success"}`}>
+            {errorMessage || successMessage}
+          </p>
+        )}
       </div>
     </form>
   );
