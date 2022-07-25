@@ -80,10 +80,6 @@ main {
     hyphens: auto;
     word-wrap: break-word;
     overflow-wrap: break-word;
-
-    @media screen and (max-width: constants.$heading-font-shrink-point) {
-      font-size: calc(#{math.div(constants.$heading-font-size, constants.$heading-font-shrink-point)} * 100vw);
-    }
   }
 
   .bullet {
@@ -99,11 +95,22 @@ main {
     }
   }
 
-  @media screen and (max-width: constants.$mobile-width) {
-    left: 0;
+  @media screen and (max-width: constants.$heading-font-shrink-point) {
+    h1 {
+      font-size: calc(#{math.div(constants.$heading-font-size, constants.$heading-font-shrink-point)} * 100vw);
+      margin-left: 55px;
+    }
 
     .bullet {
       display: none;
+    }
+  }
+
+  @media screen and (max-width: constants.$mobile-width) {
+    left: 0;
+
+    h1 {
+      margin-left: 0;
     }
   }
 }
@@ -112,7 +119,7 @@ main {
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 100px 10vw; //200px;
+  padding: 100px 10vw;
 
   @media screen and (min-width: calc(200px / 0.1)) {
     padding: 100px 10vw;
@@ -160,20 +167,23 @@ main {
 }
 
 .about {
-  padding-right: 60px;
-  padding-left: 60px;
+  padding: 0;
+
+  @media screen and (min-width: 1100px) {
+    padding: 0 60px;
+  }
 
   .intro {
-    padding: 0 0 0 140px;
-
-    @media screen and (max-width: constants.$heading-font-shrink-point) {
-      padding: 0;
-    }
+    padding: 100px 10vw;
 
     .about-intro {
       width: 90%;
       font-size: 1.2em;
-      margin: 30px 0;
+      margin: 30px 0 30px 80px;
+
+      @media screen and (max-width: constants.$heading-font-shrink-point) {
+        margin: 30px 0;
+      }
     }
   }
 
