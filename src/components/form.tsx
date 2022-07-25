@@ -15,15 +15,16 @@ type FieldProps = {
 };
 
 type SelectProps = {
+  id: string,
   title: string,
   options: string[],
   value: string,
   setValue: (value: string) => void
 };
 
-const Select: React.FunctionComponent<SelectProps> = ({ title, options, value = "-1", setValue }) => (
+const Select: React.FunctionComponent<SelectProps> = ({ id, title, options, value = "-1", setValue }) => (
   <div className={"select-container"}>
-    <select onChange={(e) => setValue(e.target.value)}>
+    <select name={id} onChange={(e) => setValue(e.target.value)}>
       <option key={"-1"} disabled selected={value === "-1"}>{title.toLowerCase()}</option>
       {options.map((option) => <option selected={value === option} key={option}>{option}</option>)}
     </select>
@@ -34,23 +35,16 @@ const Select: React.FunctionComponent<SelectProps> = ({ title, options, value = 
 const Field: React.FunctionComponent<FieldProps> = ({ fieldData, value, setValue }) => {
   switch (fieldData.type) {
     case "text":
+    case "email":
       return (
         <input
-          type={"text"}
+          type={fieldData.type}
+          name={fieldData.id}
           placeholder={fieldData.title}
           value={value || ""}
           onChange={(e) => setValue(e.target.value)}
         />
       );
-    case "email":
-      return (
-        <input
-          type={"email"}
-          placeholder={fieldData.title}
-          value={value || ""}
-          onChange={(e) => setValue(e.target.value)}
-        />
-      )
     case "dropdown":
       return <Select {...fieldData} value={value} setValue={setValue} />;
     default:
@@ -92,11 +86,12 @@ const Form: React.FunctionComponent<FormProps> = ({ formName, data }) => {
     return true;
   }
 
-  const encode = (data: FormState) => {
-    return Object.keys(data)
-      .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
-      .join("&");
-  }
+  const encode = (data: FormState) => (
+    Object.keys(data)
+      .map((key) => (
+        encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
+      )).join("&")
+  );
 
   const submitForm: React.FormEventHandler = async (e) => {
     e.preventDefault();
