@@ -2,11 +2,9 @@ import * as React from "react";
 import Heading from "../components/heading";
 import Form from "../components/form";
 import moment from "moment";
-import axios, { AxiosResponse, AxiosError } from "axios";
 import { graphql, useStaticQuery } from "gatsby";
 
 const DATE_FORMAT = "YYYY-MM-DD hh:mm A";
-const FUNCTION_ENDPOINT = "/.netlify/functions/submit-get-involved-form";
 
 type Query = {
   getInvolvedTitle: ContentfulSectionTitle,
@@ -14,9 +12,6 @@ type Query = {
   upcomingEventsTitle: ContentfulSectionTitle,
   events: All<ContentfulEvent>
 };
-
-type ServerSuccessData = { message: string };
-type ServerErrorData = { error: string };
 
 const EventElement: React.FunctionComponent<UpcomingEvent> = ({ name, location, start, end }) => (
   <div className={"event"} key={`${name}_${location}_${start.format(DATE_FORMAT)}_${end.format(DATE_FORMAT)}`}>
