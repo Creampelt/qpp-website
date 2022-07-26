@@ -2,7 +2,3 @@ node_modules/
 .cache/
 public
 .idea/
-
-# Local Netlify folder
-.netlify
-.env
