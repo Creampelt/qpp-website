@@ -28,6 +28,19 @@ h3 {
 }
 
 .typewriter {
+  position: relative;
+
+  .placeholder-text {
+    opacity: 0;
+  }
+
+  .typing-text {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(100% + 1.15em);
+  }
+
   .cursor {
     width: 0.15em;
     height: 1.15em;
