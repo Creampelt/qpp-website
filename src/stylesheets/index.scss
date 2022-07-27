@@ -420,3 +420,24 @@ form {
     }
   }
 }
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  background-color: constants.$footer-bg;
+
+  a {
+    margin: 0 20px;
+
+    img {
+      width: auto;
+      height: 35px;
+
+      &:hover {
+        transform: translate(-3px, -3px);
+      }
+    }
+  }
+}
