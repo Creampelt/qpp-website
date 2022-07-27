@@ -1,0 +1,34 @@
+@use "constants";
+
+.not-found-page {
+  background-color: white;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+
+img {
+  width: 270px;
+  height: auto;
+}
+
+h1 {
+  font-size: constants.$heading-font-size;
+  margin: 0;
+  text-transform: none;
+}
+
+h2 {
+  font-size: 60px;
+  margin: 0;
+  text-transform: none;
+}
+
+p {
+  font-size: 1.15em;
+  max-width: 500px;
+}

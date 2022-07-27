@@ -2,11 +2,9 @@ import * as React from "react";
 import Heading from "../components/heading";
 import Form from "../components/form";
 import moment from "moment";
-import axios, { AxiosResponse, AxiosError } from "axios";
 import { graphql, useStaticQuery } from "gatsby";
 
 const DATE_FORMAT = "YYYY-MM-DD hh:mm A";
-const FUNCTION_ENDPOINT = "/.netlify/functions/submit-get-involved-form";
 
 type Query = {
   getInvolvedTitle: ContentfulSectionTitle,
@@ -15,16 +13,13 @@ type Query = {
   events: All<ContentfulEvent>
 };
 
-type ServerSuccessData = { message: string };
-type ServerErrorData = { error: string };
-
 const EventElement: React.FunctionComponent<UpcomingEvent> = ({ name, location, start, end }) => (
   <div className={"event"} key={`${name}_${location}_${start.format(DATE_FORMAT)}_${end.format(DATE_FORMAT)}`}>
     <div className={"bullet"} />
     <div>
-      <h6>{name}</h6>
-      <p>{location}</p>
-      <p>
+      <h6 className={"column name-column"}>{name}</h6>
+      <p className={"column"}>{location}</p>
+      <p className={"column"}>
         {start.isSame(end, "day")
           ? `${start.format("M/D")} from ${start.format("h:mma")} to ${end.format("h:mma")}`
           : `${start.format("M/D [at] h:mma")} to ${end.format("M/D [at] h:mma")}`

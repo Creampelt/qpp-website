@@ -28,6 +28,19 @@ h3 {
 }
 
 .typewriter {
+  position: relative;
+
+  .placeholder-text {
+    opacity: 0;
+  }
+
+  .typing-text {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(100% + 1.15em);
+  }
+
   .cursor {
     width: 0.15em;
     height: 1.15em;
@@ -353,27 +366,26 @@ form {
           justify-content: space-between;
           align-items: center;
 
-          & > * {
+          .column {
             flex: 1;
+            margin: 5px;
+            hyphens: auto;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
           }
 
-          h6 {
+          .name-column {
             font-size: 1em;
             font-weight: normal;
-            margin: 0;
-          }
-
-          p:first-of-type {
-            text-align: center;
+            flex: 2;
           }
         }
 
         .bullet {
-          content: "";
-          width: 15px;
-          height: 15px;
-          margin: 20px;
-          transform: rotate(45deg);
+          clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+          width: 20px;
+          height: 20px;
+          margin: 15px;
         }
       }
     }

@@ -25,7 +25,8 @@ const Typewriter: React.FunctionComponent<TypewriterProps & React.HTMLProps<HTML
 
   return (
     <div className={"typewriter"}>
-      <p className={"text"}>
+      <p className={"text placeholder-text"}>{text}</p>
+      <p className={"text typing-text"}>
         {displayedIndex >= text.length ? text : text.slice(0, displayedIndex)}
         <span className={"cursor"} />
       </p>
