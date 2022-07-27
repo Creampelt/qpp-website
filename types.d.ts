@@ -99,6 +99,14 @@ type ContentfulImage = {
   image: GatsbyImage & { title: string }
 };
 
+type ContentfulFooterLink = {
+  image: {
+    url: string
+  },
+  contentfulid: string,
+  url: string
+}
+
 interface All<T> {
   edges: { node: T }[]
-}
+};

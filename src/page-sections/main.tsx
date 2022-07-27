@@ -5,6 +5,7 @@ import Header from "./header";
 import About from "./about";
 import GetInvolved from "./get-involved";
 import Sponsors from "./sponsors";
+import Footer from "../components/footer";
 import "../stylesheets/index.scss";
 import { graphql, useStaticQuery } from "gatsby";
 
@@ -151,6 +152,7 @@ const Main: React.FunctionComponent<IndexProps> = ({ section }) => {
         <GetInvolved ref={getInvolved} />
         <Sponsors ref={sponsors} />
       </main>
+      <Footer />
     </div>
   );
 };
