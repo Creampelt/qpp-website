@@ -1,54 +1,59 @@
-import * as React from "react"
-import { Link } from "gatsby"
+import * as React from "react";
+import { graphql, Link, useStaticQuery } from "gatsby";
+import { Helmet } from "react-helmet";
+import svg404 from "../images/404.svg";
+import "../stylesheets/index.scss";
+import "../stylesheets/404.scss";
+import {GatsbyImage, getImage} from "gatsby-plugin-image";
 
-// styles
-const pageStyles = {
-  color: "#232129",
-  padding: "96px",
-  fontFamily: "-apple-system, Roboto, sans-serif, serif",
-}
-const headingStyles = {
-  marginTop: 0,
-  marginBottom: 64,
-  maxWidth: 320,
-}
-
-const paragraphStyles = {
-  marginBottom: 48,
-}
-const codeStyles = {
-  color: "#8A6534",
-  padding: 4,
-  backgroundColor: "#FFF4DB",
-  fontSize: "1.25rem",
-  borderRadius: 4,
+type Query = {
+  favicon: {
+    image: {
+      file: {
+        url: string
+      }
+    }
+  },
+  svg404: {
+    image: {
+      url: string
+    }
+  }
 }
 
-// markup
 const NotFoundPage = () => {
+  const data: Query = useStaticQuery(graphql`
+    {
+      favicon: contentfulImage(contentfulid: { eq: "favicon" }) {
+        image {
+          file {
+            url
+          }
+        }
+      }
+      svg404: contentfulImage(contentfulid: { eq: "404" }) {
+        image {
+          url
+        }
+      }
+    }
+  `);
+
   return (
-    <main style={pageStyles}>
-      <title>Not found</title>
-      <h1 style={headingStyles}>Page not found</h1>
-      <p style={paragraphStyles}>
-        Sorry{" "}
-        <span role="img" aria-label="Pensive emoji">
-          😔
-        </span>{" "}
-        we couldn’t find what you were looking for.
-        <br />
-        {process.env.NODE_ENV === "development" ? (
-          <>
-            <br />
-            Try creating a page in <code style={codeStyles}>src/pages/</code>.
-            <br />
-          </>
-        ) : null}
-        <br />
-        <Link to="/">Go home</Link>.
+    <main className={"not-found-page"}>
+      <Helmet>
+        <meta charSet={"utf-8"}/>
+        <meta name={"viewport"} content={"width=device-width, initial-scale=1"}/>
+        <title>404: Not Found</title>
+        <link rel={"icon"} type={"image/x-icon"} href={data.favicon.image.file.url} />
+      </Helmet>
+      <img src={data.svg404.image.url} alt={"404"} />
+      <p>
+        Whoops! Not sure how you got here, but this URL doesn't exist. Try
+        something else or <Link to={"/"}>return home</Link>.
       </p>
     </main>
   )
-}
+};
 
-export default NotFoundPage
+export default NotFoundPage;
