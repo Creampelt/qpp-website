@@ -26,7 +26,7 @@ const Navbar: React.FunctionComponent<NavbarProps> = ({ links, pos, setPos }) =>
 
   const logo = getImage(data.logo.image.gatsbyImageData);
   const linkRefs = React.useRef(Array(links.length).fill(null));
-  const [isMobile, setIsMobile] = React.useState(false);
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 500);
   const [width, setWidth] = React.useState(0);
   const [offset, setOffset] = React.useState(0);
   const [navOpen, setNavOpen] = React.useState(false);
