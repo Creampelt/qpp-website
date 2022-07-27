@@ -1,10 +1,8 @@
 import * as React from "react";
 import { graphql, Link, useStaticQuery } from "gatsby";
 import { Helmet } from "react-helmet";
-import svg404 from "../images/404.svg";
 import "../stylesheets/index.scss";
 import "../stylesheets/404.scss";
-import {GatsbyImage, getImage} from "gatsby-plugin-image";
 
 type Query = {
   favicon: {
