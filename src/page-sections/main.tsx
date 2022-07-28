@@ -150,7 +150,7 @@ const Main: React.FunctionComponent<IndexProps> = ({ section }) => {
         <Header />
         <About ref={about} />
         <GetInvolved ref={getInvolved} />
-        <Sponsors ref={sponsors} />
+        {/*<Sponsors ref={sponsors} />*/}
       </main>
       <Footer />
     </div>
