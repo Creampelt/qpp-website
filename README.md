@@ -1,54 +1,30 @@
-<p align="center">
-  <a href="https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
-  </a>
-</p>
-<h1 align="center">
-  Gatsby minimal TypeScript starter
-</h1>
+# Q++ Website
 
-## 🚀 Quick start
+This website is made using [Gatsby](https://www.gatsbyjs.com/), [Contentful](https://www.contentful.com/), and [Netlify](https://www.netlify.com/).
 
-1.  **Create a Gatsby site.**
+## Gatsby
 
-    Use the Gatsby CLI to create a new site, specifying the minimal TypeScript starter.
+To run the site locally, ensure that you have Node.js installed. Then, clone the repo and run the following command.
 
-    ```shell
-    # create a new Gatsby site using the minimal TypeScript starter
-    npm init gatsby
-    ```
+```shell
+cd qpp-website/
+npm run develop
+```
 
-2.  **Start developing.**
+Your site is now running at http://localhost:8000!
 
-    Navigate into your new site’s directory and start it up.
+### Site structure
 
-    ```shell
-    cd my-gatsby-site/
-    npm run develop
-    ```
+All of the possible URLs in the site to navigate to are listed under `pages/`. Notice that these all simply redirect to different sections of the `Main` component (found under `page-sections/main.tsx`). The other files in `page-sections/` contain the actual sections of the page, which are incorporated into `Main`. Other site components can be found under `components/`.
 
-3.  **Open the code and start customizing!**
+Note that all site data (text content and images) are queried from Contentful.
 
-    Your site is now running at http://localhost:8000!
+## Contentful
 
-    Edit `src/pages/main.tsx` to see your site update in real-time!
+The site uses Contentful for its CMS (content management system). All text and images can be changed from here and the site will automatically rebuild and redeploy without needing to edit code. To get access to the Contentful space, message me on Discord ([@sturmanator#8888](https://discordapp.com/users/sturmanator#8888)).
 
-4.  **Learn more**
+The main section of Contentful that we are concerned with is the `Content` tab. Under this tab, we can create instances of `Content model`s that will be displayed in various sections of the website. Note that some fields (`Image`, `Section Title`, `Text`) are queried by ID, so creating new instances will have no effect on the site, while other fields (`Benefit`, `Event`, `Footer Link`, etc.) will display as many instances as are present.
 
-    - [Documentation](https://www.gatsbyjs.com/docs/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
+## Netlify
 
-    - [Tutorials](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
-
-    - [Guides](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
-
-    - [API Reference](https://www.gatsbyjs.com/docs/api-reference/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
-
-    - [Plugin Library](https://www.gatsbyjs.com/plugins?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
-
-    - [Cheat Sheet](https://www.gatsbyjs.com/docs/cheat-sheet/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
-
-## 🚀 Quick start (Gatsby Cloud)
-
-Deploy this starter with one click on [Gatsby Cloud](https://www.gatsbyjs.com/cloud/):
-
-[<img src="https://www.gatsbyjs.com/deploynow.svg" alt="Deploy to Gatsby Cloud">](https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/gatsbyjs/gatsby-starter-minimal-ts)
+Lastly, the site uses Netlify for hosting. Not a lot needs to be done from this console, as builds are auto-deployed when code is merged from PRs or when content is updated on Contentful. Netlify also has a useful Forms feature, which records submissions to forms and can send email updates when new submissions are received. [Message me](https://discordapp.com/users/sturmanator#8888) to get access to the Netlify console or receive email updates from the Get Involved form.
