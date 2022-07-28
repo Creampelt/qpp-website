@@ -1,6 +1,6 @@
 # Q++ Website
 
-This website is made using [Gatsby](https://www.gatsbyjs.com/), [Contentful](https://www.contentful.com/), and [Netlify](https://www.netlify.com/).
+This website is made using [Gatsby](https://www.gatsbyjs.com/), [Contentful](https://www.contentful.com/), and [Netlify](https://www.netlify.com/). The website can be viewed at [texasqpp.com](https://texasqpp.com).
 
 ## Gatsby
 
