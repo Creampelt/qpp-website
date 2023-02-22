@@ -1,17 +1,24 @@
 import * as React from "react";
 import Heading from "../components/heading";
 import Form from "../components/form";
-import moment from "moment";
+import dayjs from "dayjs";
 import { graphql, useStaticQuery } from "gatsby";
+import axios, { AxiosResponse } from "axios";
 
 const DATE_FORMAT = "YYYY-MM-DD hh:mm A";
+const EVENTS_ENDPOINT = "https://us-central1-org-assistant.cloudfunctions.net/getEvents?orgId=xHtVQbaPJrwOFKJ6kJbc&seasonId=Spring%202023";
 
 type Query = {
   getInvolvedTitle: ContentfulSectionTitle,
   formFields: All<ContentfulFormField>,
-  upcomingEventsTitle: ContentfulSectionTitle,
-  events: All<ContentfulEvent>
+  upcomingEventsTitle: ContentfulSectionTitle
 };
+
+type EventsResponse = AxiosResponse<{
+  data: {
+    events: QueriedEvent[]
+  }
+}>;
 
 const EventElement: React.FunctionComponent<UpcomingEvent> = ({ name, location, start, end }) => (
   <div className={"event"} key={`${name}_${location}_${start.format(DATE_FORMAT)}_${end.format(DATE_FORMAT)}`}>
@@ -48,24 +55,23 @@ const GetInvolved = React.forwardRef<HTMLDivElement>((_, ref) => {
       upcomingEventsTitle: contentfulSectionTitle(contentfulid: { eq: "upcomingEvents" }) {
         title
       }
-      events: allContentfulEvent(sort: { fields: start }) {
-        edges {
-          node {
-            name
-            location
-            start(formatString: "YYYY-MM-DD hh:mm A")
-            end(formatString: "YYYY-MM-DD hh:mm A")
-          }
-        }
-      }
     }
   `);
 
-  const events = data.events.edges.map(({ node }) => ({
-    ...node,
-    start: moment(node.start, DATE_FORMAT),
-    end: moment(node.end, DATE_FORMAT)
-  })).filter(({ start }) => moment().isSameOrBefore(start, "day"));
+  const [events, setEvents] = React.useState<UpcomingEvent[]>([]);
+
+  React.useEffect(() => {
+    axios.get(EVENTS_ENDPOINT).then(({ data }: EventsResponse) => {
+      const now = dayjs();
+      const upcomingEvents = data.data.events
+        .map(({ startTime, endTime, ...event }) => ({
+        ...event,
+        start: dayjs.unix(startTime["_seconds"]),
+        end: dayjs.unix(endTime["_seconds"])
+      })).filter(({ end }) => end.isAfter(now, "minutes"))
+      setEvents(upcomingEvents);
+    }).catch((e) => console.error(e.message));
+  }, []);
 
   return (
     <div ref={ref} className={"section get-involved"}>
