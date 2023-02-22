@@ -32,8 +32,8 @@ type FormField = DropdownField | TextField;
 type UpcomingEvent = {
   name: string,
   location: string
-  start: moment.Moment,
-  end: moment.Moment
+  start: dayjs.Dayjs,
+  end: dayjs.Dayjs
 };
 
 type GatsbyImage = {
@@ -69,6 +69,13 @@ type ContentfulFormField = {
   type: "text" | "email" | "dropdown",
   options: string[]
 };
+
+type QueriedEvent = {
+  name: string,
+  location: string,
+  startTime: { "_seconds": number, "_nanoseconds": number },
+  endTime: { "_seconds": number, "_nanoseconds": number }
+}
 
 type ContentfulEvent = {
   name: string,
