@@ -42,7 +42,7 @@ const GetInvolved = React.forwardRef<HTMLDivElement>((_, ref) => {
       getInvolvedTitle: contentfulSectionTitle(contentfulid: { eq: "getInvolved" }) {
         title
       }
-      formFields: allContentfulFormField(filter: { formId: { eq: "getInvolved" } }, sort: { fields: index }) {
+      formFields: allContentfulFormField(filter: { formId: { eq: "getInvolved" } }, sort: { index: ASC }) {
         edges {
           node {
             contentfulid

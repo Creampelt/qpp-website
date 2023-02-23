@@ -35,5 +35,9 @@ module.exports = {
         accessToken: "-BvK0N2zpIzJRB81G06cHJaPRcmQ36KpRboIqn0Zy3g",
       },
     },
+    {
+      resolve: `gatsby-transformer-remark`,
+      options: {},
+    },
   ]
 };

@@ -17,7 +17,7 @@ type Query = {
       url: string
     }
   }
-}
+};
 
 const NotFoundPage = () => {
   const data: Query = useStaticQuery(graphql`

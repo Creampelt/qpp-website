@@ -13,7 +13,7 @@ const BenefitCard: React.FunctionComponent<Benefit> = ({ img, title, body }) => 
   <div className={"benefit-card"}>
     <img src={img.url} alt={img.title} />
     <h3>{title}</h3>
-    <p>{body}</p>
+    <span dangerouslySetInnerHTML={{ __html: body }} />
   </div>
 );
 
@@ -28,7 +28,7 @@ const About = React.forwardRef<HTMLDivElement>((_, ref) => {
           content
         }
       }
-      benefits: allContentfulBenefit(sort: { fields: index }) {
+      benefits: allContentfulBenefit(sort: { index: ASC }) {
         edges {
           node {
             img {
@@ -37,7 +37,9 @@ const About = React.forwardRef<HTMLDivElement>((_, ref) => {
             }
             title
             body {
-              body
+              childMarkdownRemark {
+                html
+              }
             }
           }
         }
@@ -52,7 +54,9 @@ const About = React.forwardRef<HTMLDivElement>((_, ref) => {
         <p className={"about-intro"}>{data.aboutDescription.content.content}</p>
       </div>
       <AppearOnScroll className={"benefits"}>
-        {data.benefits.edges.map(({ node }) => <BenefitCard {...node} body={node.body.body} key={node.title} />)}
+        {data.benefits.edges.map(({ node }) => (
+          <BenefitCard {...node} body={node.body.childMarkdownRemark.html} key={node.title} />
+        ))}
       </AppearOnScroll>
     </div>
   );
