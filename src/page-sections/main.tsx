@@ -8,7 +8,6 @@ import Sponsors from "./sponsors";
 import Footer from "../components/footer";
 import "../stylesheets/index.scss";
 import { graphql, useStaticQuery } from "gatsby";
-import { MDXProvider } from "@mdx-js/react"
 
 const BUFFER = 10;
 
@@ -138,25 +137,23 @@ const Main: React.FunctionComponent<IndexProps> = ({ section }) => {
   }, [pos]);
 
   return (
-    <MDXProvider>
-      <div>
-        <Helmet>
-          <meta charSet={"utf-8"} />
-          <meta name={"viewport"} content={"width=device-width, initial-scale=1"} />
-          <title>{data.title.content.content}</title>
-          <link rel={"canonical"} href={"https://texasqpp.com"} />
-          <link rel={"icon"} type={"image/x-icon"} href={data.favicon.image.file.url} />
-        </Helmet>
-        <Navbar links={links} pos={pos} setPos={scrollTo} />
-        <main>
-          <Header />
-          <About ref={about} />
-          <GetInvolved ref={getInvolved} />
-          {/*<Sponsors ref={sponsors} />*/}
-        </main>
-        <Footer />
-      </div>
-    </MDXProvider>
+    <div>
+      <Helmet>
+        <meta charSet={"utf-8"} />
+        <meta name={"viewport"} content={"width=device-width, initial-scale=1"} />
+        <title>{data.title.content.content}</title>
+        <link rel={"canonical"} href={"https://texasqpp.com"} />
+        <link rel={"icon"} type={"image/x-icon"} href={data.favicon.image.file.url} />
+      </Helmet>
+      <Navbar links={links} pos={pos} setPos={scrollTo} />
+      <main>
+        <Header />
+        <About ref={about} />
+        <GetInvolved ref={getInvolved} />
+        {/*<Sponsors ref={sponsors} />*/}
+      </main>
+      <Footer />
+    </div>
   );
 };
 
