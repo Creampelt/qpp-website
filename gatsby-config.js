@@ -8,8 +8,16 @@ module.exports = {
     "gatsby-plugin-sass",
     "gatsby-plugin-image",
     "gatsby-plugin-react-helmet",
-    "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
+    {
+      resolve: "gatsby-plugin-sharp",
+      options: {
+        defaults: {
+          placeholder: "none",
+          backgroundColor: "transparent"
+        }
+      }
+    },
     {
       resolve: "gatsby-source-filesystem",
       options: {
