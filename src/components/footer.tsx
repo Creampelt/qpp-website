@@ -8,7 +8,7 @@ type Query = {
 const Footer: React.FunctionComponent = () => {
   const data: Query = useStaticQuery(graphql`
     {
-      footerLinks: allContentfulFooterLink(sort: { fields: index }) {
+      footerLinks: allContentfulFooterLink(sort: { index: ASC }) {
         edges {
           node {
             image {
@@ -21,6 +21,8 @@ const Footer: React.FunctionComponent = () => {
       }
     }
   `);
+
+  console.log(data.footerLinks.edges);
 
   return (
     <footer>

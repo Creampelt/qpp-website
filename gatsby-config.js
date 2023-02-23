@@ -2,14 +2,23 @@
 module.exports = {
   siteMetadata: {
     title: `Q++ &bull; UT Austin`,
-    siteUrl: `https://texasqpp.com`
+    siteUrl: `https://texasqpp.com`,
+    description: "Official website for Q++, the organization for LGBTQ+ people in tech at the University of Texas at Austin."
   },
   plugins: [
     "gatsby-plugin-sass",
     "gatsby-plugin-image",
     "gatsby-plugin-react-helmet",
-    "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
+    {
+      resolve: "gatsby-plugin-sharp",
+      options: {
+        defaults: {
+          placeholder: "none",
+          backgroundColor: "transparent"
+        }
+      }
+    },
     {
       resolve: "gatsby-source-filesystem",
       options: {
@@ -34,6 +43,10 @@ module.exports = {
         spaceId: "wnncb7ll2syo",
         accessToken: "-BvK0N2zpIzJRB81G06cHJaPRcmQ36KpRboIqn0Zy3g",
       },
+    },
+    {
+      resolve: `gatsby-transformer-remark`,
+      options: {},
     },
   ]
 };

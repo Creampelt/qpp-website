@@ -40,7 +40,7 @@ const Sponsors = React.forwardRef<HTMLDivElement>((_, ref) => {
       sponsorsTitle: contentfulSectionTitle(contentfulid: { eq: "sponsors" }) {
         title
       }
-      formFields: allContentfulFormField(sort: { fields: index }) {
+      formFields: allContentfulFormField(sort: { index: ASC }) {
         edges {
           node {
             title
@@ -49,7 +49,7 @@ const Sponsors = React.forwardRef<HTMLDivElement>((_, ref) => {
           }
         }
       }
-      sponsors: allContentfulSponsorCategory(sort: { fields: index }) {
+      sponsors: allContentfulSponsorCategory(sort: { index: ASC }) {
         edges {
           node {
             title

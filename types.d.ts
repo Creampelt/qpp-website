@@ -90,7 +90,11 @@ type ContentfulBenefit = {
     url: string
   },
   title: string,
-  body: { body: string }
+  body: {
+    childMarkdownRemark: {
+      html: string
+    }
+  }
 };
 
 type ContentfulSponsorCategory = {
