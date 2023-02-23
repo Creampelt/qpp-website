@@ -39,7 +39,7 @@ const NotFoundPage = () => {
 
   return (
     <main className={"not-found-page"}>
-      <Helmet>
+      <Helmet htmlAttributes={{ lang: "en" }}>
         <meta charSet={"utf-8"}/>
         <meta name={"viewport"} content={"width=device-width, initial-scale=1"}/>
         <title>404: Not Found</title>

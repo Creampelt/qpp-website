@@ -2,7 +2,8 @@
 module.exports = {
   siteMetadata: {
     title: `Q++ &bull; UT Austin`,
-    siteUrl: `https://texasqpp.com`
+    siteUrl: `https://texasqpp.com`,
+    description: "Official website for Q++, the organization for LGBTQ+ people in tech at the University of Texas at Austin."
   },
   plugins: [
     "gatsby-plugin-sass",
