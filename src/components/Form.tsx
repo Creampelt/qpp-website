@@ -32,7 +32,16 @@ const Form: React.FunctionComponent<FormProps> = ({ name, fields }) => {
     return !errorMessage;
   }
 
-  const submitForm: React.FormEventHandler = async (e) => {
+  const resetForm: React.FormEventHandler<HTMLFormElement> = (
+    e
+  ) => {
+    e.preventDefault();
+    setFormState({});
+  }
+
+  const submitForm: React.FormEventHandler<HTMLFormElement> = async (
+    e
+  ) => {
     e.preventDefault();
     if (validate()) {
       try {
@@ -58,7 +67,7 @@ const Form: React.FunctionComponent<FormProps> = ({ name, fields }) => {
       fields-netlify={"true"}
       fields-netlify-honeypot={"bot-field"}
       onSubmit={submitForm}
-      onReset={() => setFormState({})}
+      onReset={resetForm}
       noValidate
     >
       <input type={"hidden"} name={"form-name"} value={name} />

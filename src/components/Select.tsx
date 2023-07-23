@@ -18,18 +18,19 @@ const Select: React.FunctionComponent<SelectProps> = ({
   <div className={"select-container"}>
     <select
       name={id}
+      value={value}
       onChange={(e) => setValue(e.target.value)}
     >
-      <option key={"-1"} disabled selected={value === "-1"}>
+      <option value={"-1"} disabled>
         {title.toLowerCase()}
       </option>
       {options.map((option) => (
-        <option selected={value === option} key={option}>
+        <option value={option} key={option}>
           {option}
         </option>
       ))}
     </select>
-    <span className={"dropdown-arrow"} />
+    <span className={"dropdown-arrow"}/>
   </div>
 );
 
