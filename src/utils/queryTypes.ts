@@ -1,3 +1,16 @@
+import type {
+  All,
+  ContentfulNavbarTitle,
+  ContentfulImage,
+  ContentfulSectionTitle,
+  ContentfulText,
+  ContentfulBenefit,
+  ContentfulFormField,
+  ContentfulSocialMediaLink,
+  ContentfulSponsorCategory,
+  ContentfulFooterLink
+} from "./contentfulTypes";
+
 export type MainQueryType = {
   favicon: {
     image: {
@@ -28,7 +41,9 @@ export type AboutQueryType = {
 export type GetInvolvedQueryType = {
   getInvolvedTitle: ContentfulSectionTitle,
   formFields: All<ContentfulFormField>,
-  upcomingEventsTitle: ContentfulSectionTitle
+  upcomingEventsTitle: ContentfulSectionTitle,
+  socialMediaTitle: ContentfulSectionTitle,
+  socialMediaLinks: All<ContentfulSocialMediaLink>
 };
 
 export type SponsorsQueryType = {

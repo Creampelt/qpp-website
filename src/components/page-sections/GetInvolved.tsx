@@ -2,6 +2,7 @@ import * as React from "react";
 import Heading from "../Heading";
 import Form from "../Form";
 import EventElement from "../Event";
+import SocialMediaLink from "../SocialMediaLink";
 import dayjs from "dayjs";
 import type { GetInvolvedQueryType } from "../../utils/queryTypes";
 import { graphql, useStaticQuery } from "gatsby";
@@ -43,6 +44,23 @@ const GetInvolved = React.forwardRef<HTMLDivElement>((
       ) {
         title
       }
+      socialMediaTitle: contentfulSectionTitle(
+        contentfulid: { eq: "socialMedia" }
+      ) {
+        title
+      }
+      socialMediaLinks: allContentfulSocialMediaLink(
+        sort: { index: ASC }
+      ) {
+        edges {
+          node {
+            contentfulid
+            title
+            handle
+            url
+          }
+        }
+      }
     }
   `);
   const [
@@ -78,7 +96,7 @@ const GetInvolved = React.forwardRef<HTMLDivElement>((
       />
       <div className={"upcoming-events"}>
         <h2>{data.upcomingEventsTitle.title}</h2>
-        <div className={"events-list"}>
+        <ul className={"styled-list"}>
           {events.length === 0 ? (
             <p className={"no-events"}>
               There are currently no scheduled events.
@@ -86,7 +104,18 @@ const GetInvolved = React.forwardRef<HTMLDivElement>((
           ) : events.map((event, i) => (
             <EventElement key={i} {...event} />
           ))}
-        </div>
+        </ul>
+      </div>
+      <div className={"social-media"}>
+        <h2>{data.socialMediaTitle.title}</h2>
+        <ul className={"styled-list"}>
+          {data.socialMediaLinks.edges.map(({ node }) => (
+            <li key={node.contentfulid}>
+              {node.title}:&nbsp;
+              <a href={node.url} target={"__blank"}>{node.handle}</a>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   )

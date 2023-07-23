@@ -75,6 +75,29 @@ h3 {
   }
 }
 
+.styled-list {
+  padding: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+
+    &::before {
+      content: " ";
+      clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+      width: 20px;
+      height: 20px;
+      margin: 15px;
+    }
+
+    @for $i from 1 through 6 {
+      &:nth-of-type(6n + #{$i})::before {
+        background-color: list.nth(constants.$rainbow, $i);
+      }
+    }
+  }
+}
+
 main {
   width: 100%;
 }
@@ -343,51 +366,29 @@ form {
   }
 }
 
-.get-involved {
-  .upcoming-events {
-    .no-events {
-      text-align: center;
+.get-involved .upcoming-events {
+  .no-events {
+    text-align: center;
+  }
+
+  .event {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+
+    .column {
+      flex: 1;
+      margin: 5px;
+      hyphens: auto;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
 
-    .events-list {
-      .event {
-        display: flex;
-        align-items: center;
-
-        @for $i from 1 through 6 {
-          &:nth-of-type(6n + #{$i}) .bullet {
-            background-color: list.nth(constants.$rainbow, $i);
-          }
-        }
-
-        div {
-          display: flex;
-          width: 100%;
-          justify-content: space-between;
-          align-items: center;
-
-          .column {
-            flex: 1;
-            margin: 5px;
-            hyphens: auto;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-          }
-
-          .name-column {
-            font-size: 1em;
-            font-weight: normal;
-            flex: 2;
-          }
-        }
-
-        .bullet {
-          clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
-          width: 20px;
-          height: 20px;
-          margin: 15px;
-        }
-      }
+    .name-column {
+      font-size: 1em;
+      font-weight: normal;
+      flex: 2;
     }
   }
 }
