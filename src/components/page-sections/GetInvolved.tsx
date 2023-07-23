@@ -96,15 +96,17 @@ const GetInvolved = React.forwardRef<HTMLDivElement>((
       />
       <div className={"upcoming-events"}>
         <h2>{data.upcomingEventsTitle.title}</h2>
-        <ul className={"styled-list"}>
-          {events.length === 0 ? (
-            <p className={"no-events"}>
-              There are currently no scheduled events.
-            </p>
-          ) : events.map((event, i) => (
-            <EventElement key={i} {...event} />
-          ))}
-        </ul>
+        {events.length === 0 ? (
+          <p className={"no-events"}>
+            There are currently no scheduled events.
+          </p>
+        ) : (
+          <ul className={"styled-list"}>
+            {events.map((event, i) => (
+              <EventElement key={i} {...event} />
+            ))}
+          </ul>
+        )}
       </div>
       <div className={"social-media"}>
         <h2>{data.socialMediaTitle.title}</h2>
