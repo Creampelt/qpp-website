@@ -9,7 +9,7 @@ const BenefitCard: React.FunctionComponent<BenefitCardProps> = ({
 }) => (
   <div className={"benefit-card"}>
     <img src={img.url} alt={img.title} />
-    <h3>{title}</h3>
+    <h2>{title}</h2>
     <span dangerouslySetInnerHTML={{ __html: body }} />
   </div>
 );

@@ -246,6 +246,10 @@ main {
       align-items: center;
       margin: 30px;
 
+      h2 {
+        font-size: constants.$benefits-font-size;
+      }
+
       @for $i from 1 through 4 {
         &:nth-child(#{$i}n) {
           transition: all 0.2s ease #{$i * 0.2}s;
