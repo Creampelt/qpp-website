@@ -131,6 +131,11 @@ const Main: React.FunctionComponent<IndexProps> = ({ section }) => {
           name={"viewport"}
           content={"width=device-width, initial-scale=1"}
         />
+        <meta
+          name={"description"}
+          content={"Official website for Q++, the organization for LGBTQ+ " +
+            "people in tech at the University of Texas at Austin."}
+        />
         <title>{data.title.content.content}</title>
         <link rel={"canonical"} href={"https://texasqpp.com"} />
         <link
