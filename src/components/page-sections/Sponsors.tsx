@@ -20,7 +20,7 @@ const Sponsors = React.forwardRef<HTMLDivElement>((
           }
         }
       }
-      sponsors: allContentfulSponsorCategory(sort: { index: ASC }) {
+      sponsorCategories: allContentfulSponsorCategory(sort: { index: ASC }) {
         edges {
           node {
             title
@@ -40,7 +40,7 @@ const Sponsors = React.forwardRef<HTMLDivElement>((
       }
     }
   `);
-  const sponsors = data.sponsors.edges
+  const categories = data.sponsorCategories.edges
     .map(({ node }) => node);
   return (
     <div ref={ref} className={"section sponsors"}>
@@ -48,7 +48,7 @@ const Sponsors = React.forwardRef<HTMLDivElement>((
       <span dangerouslySetInnerHTML={{
         __html: data.sponsorText.content.childMarkdownRemark.html
       }} />
-      {sponsors.map((category) => (
+      {categories.map((category) => (
         <SponsorCategory {...category} key={category.title} />
       ))}
     </div>

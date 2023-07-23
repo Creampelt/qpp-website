@@ -49,7 +49,7 @@ export type GetInvolvedQueryType = {
 export type SponsorsQueryType = {
   sponsorsTitle: ContentfulSectionTitle,
   sponsorText: ContentfulText,
-  sponsors: All<ContentfulSponsorCategory>
+  sponsorCategories: All<ContentfulSponsorCategory>
 }
 
 export type NavbarQueryType = {

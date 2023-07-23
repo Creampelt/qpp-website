@@ -8,7 +8,7 @@ type SponsorCategoryProps = {
 
 const SponsorCategory: React.FunctionComponent<SponsorCategoryProps> = ({
   title,
-  sponsors
+  sponsors = []
 }) => (
   <div className={`category ${title.toLowerCase()}`}>
     <h2>{title}</h2>
