@@ -1,13 +1,14 @@
 import * as React from "react";
 import { Helmet } from "react-helmet";
-import Navbar from "../components/navbar";
-import Header from "./header";
-import About from "./about";
-import GetInvolved from "./get-involved";
-import Sponsors from "./sponsors";
-import Footer from "../components/footer";
-import "../stylesheets/index.scss";
+import Navbar from "../Navbar";
+import Header from "./Header";
+import About from "./About";
+import GetInvolved from "./GetInvolved";
+import Sponsors from "./Sponsors";
+import Footer from "../Footer";
+import type { MainQueryType } from '../../utils/queryTypes';
 import { graphql, useStaticQuery } from "gatsby";
+import "../../stylesheets/index.scss";
 
 const BUFFER = 10;
 
@@ -15,25 +16,9 @@ type IndexProps = {
   section: number
 };
 
-type Query = {
-  favicon: {
-    image: {
-      file: {
-        url: string
-      }
-    }
-  },
-  title: {
-    content: {
-      content: string
-    }
-  },
-  links: All<ContentfulNavbarTitle>
-};
-
 const Main: React.FunctionComponent<IndexProps> = ({ section }) => {
-  const data: Query = useStaticQuery(graphql`
-    {
+  const data: MainQueryType = useStaticQuery(graphql`
+    query {
       favicon: contentfulImage(contentfulid: { eq: "favicon" }) {
         image {
           file {
@@ -118,7 +103,9 @@ const Main: React.FunctionComponent<IndexProps> = ({ section }) => {
     const scrolling = getDest() > 0
       ? () => (getDest() > 10)
       : () => (getDest() < -10);
-    const timeout = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+    const timeout = (ms: number) => new Promise((resolve) => (
+      setTimeout(resolve, ms)
+    ));
     while (scrolling()) {
       await timeout(25);
     }
@@ -140,17 +127,24 @@ const Main: React.FunctionComponent<IndexProps> = ({ section }) => {
     <div>
       <Helmet htmlAttributes={{ lang: "en" }}>
         <meta charSet={"utf-8"} />
-        <meta name={"viewport"} content={"width=device-width, initial-scale=1"} />
+        <meta
+          name={"viewport"}
+          content={"width=device-width, initial-scale=1"}
+        />
         <title>{data.title.content.content}</title>
         <link rel={"canonical"} href={"https://texasqpp.com"} />
-        <link rel={"icon"} type={"image/x-icon"} href={data.favicon.image.file.url} />
+        <link
+          rel={"icon"}
+          type={"image/x-icon"}
+          href={data.favicon.image.file.url}
+        />
       </Helmet>
       <Navbar links={links} pos={pos} setPos={scrollTo} />
       <main>
         <Header />
         <About ref={about} />
         <GetInvolved ref={getInvolved} />
-        {/*<Sponsors ref={sponsors} />*/}
+        <Sponsors ref={sponsors} />
       </main>
       <Footer />
     </div>

@@ -4,7 +4,10 @@ type AppearOnScrollProps = {
   className: string | undefined;
 }
 
-const AppearOnScroll: React.FunctionComponent<AppearOnScrollProps> = ({ className, children }) => {
+const AppearOnScroll: React.FunctionComponent<AppearOnScrollProps> = ({
+  className,
+  children
+}) => {
   const [show, setShow] = React.useState(false);
   const divRef = React.useRef<HTMLDivElement>(null);
 
@@ -23,7 +26,12 @@ const AppearOnScroll: React.FunctionComponent<AppearOnScrollProps> = ({ classNam
   }, []);
 
   return (
-    <div ref={divRef} className={`appear-on-scroll ${show ? "shown" : "hidden"} ${className || ""}`}>
+    <div
+      ref={divRef}
+      className={
+        `appear-on-scroll ${show ? "shown" : "hidden"} ${className || ""}`
+      }
+    >
       {children}
     </div>
   )

@@ -1,5 +1,5 @@
 import * as React from "react";
-import Main from "../page-sections/main";
+import Main from "../components/page-sections/Main";
 
 const IndexPage = () => (
   <Main section={-1} />
