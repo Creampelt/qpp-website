@@ -1,13 +1,10 @@
 import * as React from "react";
+import type { FooterQueryType } from "../utils/queryTypes";
 import { graphql, useStaticQuery } from "gatsby";
 
-type Query = {
-  footerLinks: All<ContentfulFooterLink>
-};
-
 const Footer: React.FunctionComponent = () => {
-  const data: Query = useStaticQuery(graphql`
-    {
+  const data: FooterQueryType = useStaticQuery(graphql`
+    query {
       footerLinks: allContentfulFooterLink(sort: { index: ASC }) {
         edges {
           node {
@@ -22,13 +19,15 @@ const Footer: React.FunctionComponent = () => {
     }
   `);
 
-  console.log(data.footerLinks.edges);
-
   return (
     <footer>
       {data.footerLinks.edges.map(({ node }) => (
         <a key={node.contentfulid} href={node.url} target={"_blank"}>
-          <img src={node.image.url} alt={node.contentfulid} title={node.contentfulid} />
+          <img
+            src={node.image.url}
+            alt={node.contentfulid}
+            title={node.contentfulid}
+          />
         </a>
       ))}
     </footer>

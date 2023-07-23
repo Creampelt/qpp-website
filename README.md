@@ -16,7 +16,7 @@ Your site is now running at http://localhost:8000!
 
 ### Site structure
 
-All the possible URLs in the site to navigate to are listed under `pages/`. Notice that these all simply redirect to different sections of the `Main` component (found under `page-sections/main.tsx`). The other files in `page-sections/` contain the actual sections of the page, which are incorporated into `Main`. Other site components can be found under `components/`.
+All the possible URLs in the site to navigate to are listed under `pages/`. Notice that these all simply redirect to different sections of the `Main` component (found under `page-sections/Main.tsx`). The other files in `page-sections/` contain the actual sections of the page, which are incorporated into `Main`. Other site components can be found under `components/`.
 
 Note that all site data (text content and images) are queried from Contentful.
 

@@ -37,7 +37,7 @@ type UpcomingEvent = {
 };
 
 type GatsbyImage = {
-  gatsbyImageData: import("gatsby-plugin-image").IGatsbyImageData
+  gatsbyImageData: import("gatsby-plugin-image").ImageDataLike
 }
 
 type Sponsor = {
@@ -82,6 +82,14 @@ type ContentfulEvent = {
   location: string,
   start: string,
   end: string
+};
+
+type ContentfulText = {
+  content: {
+    childMarkdownRemark: {
+      html: string
+    }
+  }
 };
 
 type ContentfulBenefit = {
