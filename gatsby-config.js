@@ -5,11 +5,12 @@ require("dotenv").config({
 
 module.exports = {
   siteMetadata: {
-    title: `Q++ &bull; UT Austin`,
-    siteUrl: `https://texasqpp.com`,
+    title: "Q++ &bull; UT Austin",
+    siteUrl: "https://texasqpp.com",
     description: "Official website for Q++, the organization for LGBTQ+ people in tech at the University of Texas at Austin."
   },
   plugins: [
+    "gatsby-plugin-netlify",
     "gatsby-plugin-sass",
     "gatsby-plugin-image",
     "gatsby-plugin-react-helmet",
@@ -38,7 +39,7 @@ module.exports = {
           "roboto mono\:400,700",
           "roboto"
         ],
-        display: 'swap'
+        display: "swap"
       }
     },
     {
@@ -49,7 +50,7 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-transformer-remark`,
+      resolve: "gatsby-transformer-remark",
       options: {},
     },
   ]
